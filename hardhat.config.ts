@@ -1,11 +1,7 @@
 import { accounts, etherscanApiKey } from './utils/network';
 import { HardhatUserConfig, task } from "hardhat/config";
-import "@nomiclabs/hardhat-etherscan";
-import "@nomiclabs/hardhat-waffle";
 import "@nomiclabs/hardhat-ethers";
 import "@typechain/hardhat";
-import "hardhat-gas-reporter";
-import "solidity-coverage";
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -30,9 +26,6 @@ const config: HardhatUserConfig = {
       url: 'http://localhost:8545',
       accounts: accounts(),
     },
-  },
-  etherscan: {
-    apiKey: etherscanApiKey(),
   },
 };
 

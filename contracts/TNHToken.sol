@@ -2,16 +2,16 @@ pragma solidity ^0.8.0;
 
 import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/math/SafeMath.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract TNHToken is ERC20 {
+contract TNHToken is ERC20, Ownable {
     using SafeMath for uint256;
     address private minter;
     uint256 private maximum_total_supply;
 
     modifier onlyMinter() {
-        require(msg.sender == getMinter(), "You are not minter");
+        require(_msgSender() == getMinter(), "You are not minter");
         _;
     }
 
@@ -36,7 +36,7 @@ contract TNHToken is ERC20 {
     }
 
     function mint(address account, uint256 amount) public onlyMinter {
-        require(add(totalSupply(), amount) <= getMaximumSupply(), "Cannot mint because maximum supply has been reached");
+        require(SafeMath.add(totalSupply(), amount) <= getMaximumSupply(), "Cannot mint because maximum supply has been reached");
         _mint(account, amount);
     }
 }
