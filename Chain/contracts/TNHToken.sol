@@ -39,4 +39,9 @@ contract TNHToken is ERC20, Ownable {
         require(SafeMath.add(totalSupply(), amount) <= getMaximumSupply(), "Cannot mint because maximum supply has been reached");
         _mint(account, amount);
     }
+
+    function transfer(address recipient, uint256 amount) public virtual override returns (bool) {
+		_transfer(_msgSender(), recipient, amount);
+        return true;
+	}
 }
