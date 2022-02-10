@@ -151,65 +151,6 @@ const Farms: React.FC = () => {
 
   return (
     <Page>
-      <StyledHeader>
-        
-        <StyleFilters>
-          <StyledSwitch>
-            <StyledSwitchItem
-              onClick={onChangeInactiveFilter}
-              disabled={!showOnlyInactive}
-              highlight={!showOnlyInactive}
-            >
-              Active
-            </StyledSwitchItem>
-            <StyledSwitchItem
-              onClick={onChangeInactiveFilter}
-              disabled={showOnlyInactive}
-              highlight={showOnlyInactive}
-            >
-              Inactive
-            </StyledSwitchItem>
-          </StyledSwitch>
-          <StyledSwitchDeposit>
-            <Switch
-              onChange={onCheckboxChange}
-              checked={showOnlyDeposit}
-              onColor="#463b11"
-              onHandleColor={theme.color.primary.main}
-              offColor="#1a1d2f"
-              offHandleColor="#8f929a"
-              boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-              activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
-              handleDiameter={22}
-              uncheckedIcon={false}
-              checkedIcon={false}
-              height={16}
-              width={40}
-            />
-            <span>Deposited</span>
-          </StyledSwitchDeposit>
-          <StyledDropdowns>
-            <StyledDropdownItem>
-              Type
-              <StyledHeaderSelect
-                defaultValue={allFarmTypes[0]}
-                classNamePrefix="header-select"
-                options={allFarmTypes}
-                onChange={onFarmTypeSelected}
-              />
-            </StyledDropdownItem>
-            <StyledDropdownItem>
-              Reward
-              <StyledHeaderSelect
-                defaultValue={allFarmRewards[0]}
-                classNamePrefix="header-select"
-                options={allFarmRewards}
-                onChange={onFarmRewardSelected}
-              />
-            </StyledDropdownItem>
-          </StyledDropdowns>
-        </StyleFilters>
-      </StyledHeader>
       <StyledBody>
         {isNoData && (
           <StyledNoFarm>
