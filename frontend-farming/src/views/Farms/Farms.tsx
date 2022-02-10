@@ -163,12 +163,6 @@ const Farms: React.FC = () => {
             <StyledFarmGridHeaderCell>Asset</StyledFarmGridHeaderCell>
             <StyledFarmGridHeaderCell>Rewards</StyledFarmGridHeaderCell>
             <StyledFarmGridHeaderCell>Deposited</StyledFarmGridHeaderCell>
-            <StyledFarmGridHeaderCell>
-              Rates
-              <Popover content="Daily compounding" position="left">
-                <i className="fas fa-question-circle"></i>
-              </Popover>
-            </StyledFarmGridHeaderCell>
           </StyledFarmGridHeader>
           <StyledFarmGridBody>
             {(allPools || []).map((p, index) => (

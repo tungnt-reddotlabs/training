@@ -1,4 +1,5 @@
-import { Farm, Market } from './tnh-contract/config';
+import { Market, Farm } from "./tnh-contract/config";
+
 
 export const Tokens: { [key: string]: string } = {
   IRON: '0xD86b5923F3AD7b585eD81B448170ae026c65ae9a',
@@ -54,38 +55,46 @@ export const buyTokenLinks: { [key: string]: string } = {
   - Set pool id if partner use Iron Finance pool, not set if the opposite */
 
 export const AllFarms: Farm[] = [
-  {
-    masterChef: '0xa37DD1f62661EB18c338f18Cf797cff8b5102d8e',
-    treasury: '0x4a812C5EE699A40530eB49727E1818D43964324e',
+   {
+    masterChef: '0xA9e1D08Aa73BA2219E2f6C9F2bB8c33717015768',
     rewardTokenSymbol: 'USDC',
+    rewardTokenAddress: '0x4d8e671cC4BE52e08Ab256eD72EB2C5c974c9d56',
     rewardTokenDecimals: 6,
-    rewardTokenAddress: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
     profitSharing: true,
+    inactive: true,
     pools: [
       {
         id: 0,
-        token0: 'TITAN',
-        wantSymbol: 'TITAN',
-        wantToken: '0xaAa5B9e6c589642f98a1cDA99B9D024B8407285A',
-        rewardToken: 'USDC',
-        isLp: false,
+        token0: 'TNH',
+        token1: 'MATIC',
+        rewardToken: 'TNH',
+        wantSymbol: 'TNH/MATIC LP',
+        wantToken: '0x84d7741e0480cb21894f1f6f5672826c6ca365d4',
+        isLp: true,
         stable: false,
         profitSharing: true,
-        market: 'IronFinance',
-        marketSymbol: 'IRONFINANCE',
+        coming: false,
+        inactive: false,
+        market: 'SushiSwap',
+        marketSymbol: 'SUSHISWAP',
       },
       {
-        id: 0,
-        token0: 'TITAN',
-        wantSymbol: 'TITAN',
-        wantToken: '0xaAa5B9e6c589642f98a1cDA99B9D024B8407285A',
-        rewardToken: 'USDC',
-        isLp: false,
+        id: 1,
+        token0: 'TNH',
+        token1: 'USDC',
+        rewardToken: 'TNH',
+        wantSymbol: 'TNH/USDC LP',
+        wantToken: '0x6f8c4061f11dd147fa7e0a8441e674aa583c7308',
+        isLp: true,
         stable: false,
         profitSharing: true,
-        market: 'IronFinance',
-        marketSymbol: 'IRONFINANCE',
+        coming: false,
+        inactive: false,
+        market: 'QuickSwap',
+        marketSymbol: 'QUICKSWAP',
       },
     ],
   },
+  
+
 ];

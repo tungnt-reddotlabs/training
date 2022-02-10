@@ -38,8 +38,6 @@ const UnstakeLPComponent: React.FC<UnstakeLPComponentProps> = ({ poolConfig }) =
       />
       <StyledFooter>
         <ButtonUnstake>Withdraw</ButtonUnstake>
-        <Spacer size="md" />
-        <ButtonUnstake>Withdraw all</ButtonUnstake>
       </StyledFooter>
     </StyledContainer>
   );

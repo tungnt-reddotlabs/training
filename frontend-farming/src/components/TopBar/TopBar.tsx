@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import AccountButton from './components/AccountButton';
-import NavMobile from './components/NavMobile';
 import Logo from '../Logo';
-import SelectChainButton from './components/SelectChainButton';
-import BuyShareButton from './components/BuyShareButton';
+
 
 interface TopBarProps {
   home?: boolean;
@@ -17,15 +15,10 @@ const TopBar: React.FC<TopBarProps> = ({ home }) => {
     <TopBarContainer marginBottom={home ? 46 : 0}>
       <StyledTopBar>
         <StyledTopBarInner>
-          {showMobileMenu && <NavMobile onDismiss={() => setShowMobileMenu(false)} />}
-          <StyledHamburgerMenu onClick={() => setShowMobileMenu(true)}>
-            <i className="fas fa-bars"></i>
-          </StyledHamburgerMenu>
           <StyledLogoContainer>
             <Logo />
           </StyledLogoContainer>
           <StyledButtonGroup>
-            <SelectChainButton />
             <AccountButton />
           </StyledButtonGroup>
         </StyledTopBarInner>

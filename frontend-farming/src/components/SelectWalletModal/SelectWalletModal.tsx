@@ -36,32 +36,7 @@ const wallets = [
     connector: ConnectorNames.Injected,
     name: 'MetaMask',
     image: MetamaskLogo,
-  },
-  {
-    connector: ConnectorNames.WalletConnect,
-    name: 'Wallet Connect',
-    image: WalletConnectLogo,
-  },
-  {
-    connector: ConnectorNames.Injected,
-    name: 'TrustWallet',
-    image: TrustWalletLogo,
-  },
-  {
-    connector: ConnectorNames.Injected,
-    name: 'MathWallet',
-    image: MathWalletLogo,
-  },
-  {
-    connector: ConnectorNames.Injected,
-    name: 'TokenPocket',
-    image: TokenPocketLogo,
-  },
-  {
-    connector: ConnectorNames.Injected,
-    name: 'SafePal Wallet',
-    image: safeWalletLogo,
-  },
+  }
 ] as Wallet[];
 
 const SelectWalletModal: React.FC<SelectWalletModalProps> = ({ onDismiss }) => {

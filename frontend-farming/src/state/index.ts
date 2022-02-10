@@ -21,11 +21,11 @@ const store = configureStore({
   },
   middleware: [
     ...getDefaultMiddleware({ thunk: false }),
-    save({ states: PERSISTED_KEYS, namespace: 'iron_finance' }),
+    save({ states: PERSISTED_KEYS, namespace: 'nth_chain' }),
   ],
   preloadedState: load({
     states: PERSISTED_KEYS,
-    namespace: 'iron_finance',
+    namespace: 'nth_chain',
     preloadedState: {
       application: { ...appInitialState },
     },

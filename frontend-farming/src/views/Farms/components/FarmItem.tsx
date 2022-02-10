@@ -108,16 +108,6 @@ const FarmItem: React.FC<FarmItemProps> = ({
       >
         <StyledHeader>
           <StyledHeaderCell>
-            <StyledHeaderIcon>
-              <StyledHeaderIconWrapper marginRight={token1 ? '-10px' : ''}>
-                <TokenSymbolMini symbol={token0} />
-              </StyledHeaderIconWrapper>
-              {token1 && (
-                <StyledHeaderIconWrapper>
-                  <TokenSymbolMini symbol={token1} />
-                </StyledHeaderIconWrapper>
-              )}
-            </StyledHeaderIcon>
             <StyledHeaderStatus>
               <StyledHeaderTitle>
                 {token0}
