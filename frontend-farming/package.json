@@ -35,6 +35,11 @@
     "uuid": "^8.3.2",
     "web3-react": "^5.0.5"
   },
+  "scripts": {
+    "start": "react-scripts --max_old_space_size=4096 start",
+    "dev-mainet": "REACT_APP_ENV=mainnet start",
+    "build": "cross-env IMAGE_INLINE_SIZE_LIMIT=0 GENERATE_SOURCEMAP=false build"
+  },
   "eslintConfig": {
     "extends": [
       "react-app",
