@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import styled from 'styled-components';
 
 function isMetaMaskInstalled() {
     return Boolean(window.ethereum)
@@ -51,17 +52,22 @@ const ConnectWalletButton: React.FC<{
     };
   }, [onChange]);
 
+
   if (!isMetaMaskInstalled()) {
     return <>No wallet found. Please install MetaMask.</>;
   }
 
   if (address) {
-    return <button>Connected with {address}</button>;
+    return <WalletButton>Connected with {address}</WalletButton>;
   }
 
   return <button onClick={connectWallet}>Connect Wallet</button>;
 };
 
+const WalletButton = styled.button`
+  position: absolute;
+  right: 0;
+`;
 
 export default ConnectWalletButton;
 
