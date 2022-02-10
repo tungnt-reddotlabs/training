@@ -1,6 +1,6 @@
 import { AllFarms } from './farms';
-import { Configuration } from './iron-bank/config';
-import deploymentMainnet from './iron-bank/deployments/mainnet';
+import { Configuration } from './tnh-contract/config';
+import deploymentMainnet from './tnh-contract/deployments/mainnet';
 
 const config: Configuration = {
   chainId: 137,
@@ -17,7 +17,7 @@ const config: Configuration = {
   defaultSlippageTolerance: 0.001,
   gasLimitMultiplier: 1.5,
   backendUrl: 'https://api.iron.finance',
-  backendDisabled: false,
+  backendDisabled: true,
   enabledChart: true,
   excludedAddress: [],
   buyShareHref:

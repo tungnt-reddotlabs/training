@@ -112,11 +112,7 @@ const AccountModal: React.FC<ModalProps> = ({ onDismiss }) => {
             </WalletInfoContent>
           </WalletInfoMain>
         </WalletInfo>
-        <AccountTokenBalances />
       </ModalUpper>
-      <ModalLower>
-        <AccountTransactions />
-      </ModalLower>
     </Modal>
   );
 };
@@ -124,7 +120,6 @@ const AccountModal: React.FC<ModalProps> = ({ onDismiss }) => {
 const WalletInfo = styled.div`
   display: flex;
   padding: 20px 0;
-  border-bottom: dashed 1px ${({ theme }) => theme.color.grey[800]};
 `;
 
 const WalletInfoHeader = styled.div`

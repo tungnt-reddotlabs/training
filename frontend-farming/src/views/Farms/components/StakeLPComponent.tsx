@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import Number from '../../../components/Number';
 import { BigNumber } from '@ethersproject/bignumber';
 import styled from 'styled-components';
-import { PoolConfig } from 'src/iron-bank/config';
+import { PoolConfig } from 'src/tnh-contract/config';
 import TokenSliderInput from './TokenSliderInput';
 
 interface StakeLPComponentProps {

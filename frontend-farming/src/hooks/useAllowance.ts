@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { BigNumber } from '@ethersproject/bignumber';
-import ERC20 from '../iron-bank/ERC20';
+import ERC20 from '../tnh-contract/ERC20';
 import { useWeb3React } from '@web3-react/core';
 
 const useAllowance = (token: ERC20, spender: string, pendingApproval?: boolean) => {

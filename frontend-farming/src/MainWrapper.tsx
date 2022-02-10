@@ -7,7 +7,6 @@ const MainWrapper: React.FC = ({ children }) => {
 
 const StyledMainContent = styled.div`
   min-height: 100vh;
-  margin-left: 250px;
   position: relative;
 
   &::before {

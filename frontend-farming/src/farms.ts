@@ -1,4 +1,4 @@
-import { Farm, Market } from './iron-bank/config';
+import { Farm, Market } from './tnh-contract/config';
 
 export const Tokens: { [key: string]: string } = {
   IRON: '0xD86b5923F3AD7b585eD81B448170ae026c65ae9a',

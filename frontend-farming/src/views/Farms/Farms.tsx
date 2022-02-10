@@ -6,12 +6,11 @@ import FarmItem from './components/FarmItem';
 import Icon from '../../assets/img/icon-staking.svg';
 import noFarm from '../../assets/img/no-farm.svg';
 import Spacer from 'src/components/Spacer';
-import { FarmData, useFetchFarmData } from 'src/api/backend-api';
 import { numberWithCommas } from 'src/utils/formatBN';
 import Loading from 'src/components/Loading';
 import theme from 'src/theme';
 import Select from 'react-select';
-import { FarmingPool, PoolConfig } from 'src/iron-bank/config';
+import { FarmingPool, PoolConfig } from 'src/tnh-contract/config';
 import { buyTokenLinks, createAddLiquidityLink, createRemoveLiquidityLink } from 'src/farms';
 import { flatten } from 'lodash';
 import Switch from 'react-switch';
@@ -25,13 +24,11 @@ type PoolDepositStatus = {
 const Farms: React.FC = () => {
   const config = useConfiguration();
   const [expanded, setExpanded] = useState(-1);
-  const [data, setData] = useState<FarmData>();
   const [farmType, setFarmType] = useState('all');
   const [farmReward, setFarmReward] = useState('all');
   const [showOnlyDeposit, setShowOnlyDeposit] = useState(false);
   const [showOnlyInactive, setShowOnlyInactive] = useState(false);
   const [poolDeposits, setPoolDeposits] = useState<PoolDepositStatus[]>([]);
-  const fetchFarmData = useFetchFarmData();
 
   const allFarmTypes = [
     { value: 'all', label: 'All' },
@@ -53,40 +50,7 @@ const Farms: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    let mounted = true;
-    fetchFarmData().then((data) => {
-      if (mounted) {
-        setData(data);
-      }
-    });
-    return () => {
-      mounted = false;
-    };
-  }, [fetchFarmData]);
 
-  const tvl = useMemo(() => {
-    if (!data?.total) {
-      return;
-    }
-    return (+data?.total).toFixed(0);
-  }, [data]);
-
-  const getPoolData = useCallback(
-    (pid: number, masterChef: string) => {
-      return (data?.pools || []).find((t) => t.masterChef === masterChef && t.id == pid);
-    },
-    [data?.pools],
-  );
-
-  const getPartnerPoolData = useCallback(
-    (partnerPoolAddress: string) => {
-      return (data?.partnerPools || []).find(
-        (t) => t.partnerPoolAddress === partnerPoolAddress,
-      );
-    },
-    [data?.partnerPools],
-  );
 
   const getPoolConfig = useCallback((pool: FarmingPool, masterChef: string): PoolConfig => {
     return Object.assign(pool, {
@@ -188,19 +152,7 @@ const Farms: React.FC = () => {
   return (
     <Page>
       <StyledHeader>
-        <StyledStakeTvl>
-          <img src={Icon} style={{ width: '60px' }} />
-          <div className="info">
-            <StyledStakeTvlTitle>Total Value Locked</StyledStakeTvlTitle>
-            <StyledStakeTvlValue>
-              {tvl ? (
-                '$' + numberWithCommas(tvl)
-              ) : (
-                <Loading size={'24px'} color={theme.color.white} />
-              )}
-            </StyledStakeTvlValue>
-          </div>
-        </StyledStakeTvl>
+        
         <StyleFilters>
           <StyledSwitch>
             <StyledSwitchItem
@@ -270,7 +222,6 @@ const Farms: React.FC = () => {
             <StyledFarmGridHeaderCell>Asset</StyledFarmGridHeaderCell>
             <StyledFarmGridHeaderCell>Rewards</StyledFarmGridHeaderCell>
             <StyledFarmGridHeaderCell>Deposited</StyledFarmGridHeaderCell>
-            <StyledFarmGridHeaderCell>TVL</StyledFarmGridHeaderCell>
             <StyledFarmGridHeaderCell>
               Rates
               <Popover content="Daily compounding" position="left">
@@ -284,11 +235,6 @@ const Farms: React.FC = () => {
                 key={index}
                 index={index}
                 visible={isVisible(p)}
-                data={
-                  p.farmUrl
-                    ? getPartnerPoolData(p.partnerPoolAddress)
-                    : getPoolData(p.id, p.masterChef)
-                }
                 expanded={expanded === index}
                 toggle={toggle}
                 poolConfig={getPoolConfig(p, p.masterChef)}

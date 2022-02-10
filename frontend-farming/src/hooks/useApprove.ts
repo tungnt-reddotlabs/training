@@ -1,7 +1,7 @@
 import { MaxUint256 } from '@ethersproject/constants';
 import { parseUnits } from '@ethersproject/units';
 import { useCallback, useMemo, useState } from 'react';
-import ERC20 from '../iron-bank/ERC20';
+import ERC20 from '../tnh-contract/ERC20';
 import { useHasPendingApproval } from '../state/transactions/hooks';
 import useAllowance from './useAllowance';
 import useHandleTransactionReceipt from './useHandleTransactionReceipt';

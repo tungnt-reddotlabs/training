@@ -1,6 +1,6 @@
 import { JsonRpcProvider } from '@ethersproject/providers';
 import config from 'src/config';
-import { web3ProviderFrom } from 'src/iron-bank/ether-utils';
+import { web3ProviderFrom } from 'src/tnh-contract/ether-utils';
 
 export function getDefaultProvider(): JsonRpcProvider {
   let url: string;

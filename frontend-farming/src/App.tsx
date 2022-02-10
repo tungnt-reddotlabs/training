@@ -10,43 +10,17 @@ import ModalsProvider from './contexts/Modals';
 import { DynamicWalletProvider } from './contexts/DynamicWalletProvider/DynamicWalletProvider';
 import Disclaimer from './components/Disclaimer';
 import MainWrapper from './MainWrapper';
-import Sidebar from './components/Sidebar';
-import loadable from '@loadable/component';
 import bgSite from './assets/img/bg-site.png';
-const Dashboard = loadable(() => import('./views/Dashboard'));
-const Bank = loadable(() => import('./views/Bank'));
-const Farms = loadable(() => import('./views/Farms'));
+import Farms from './views/Farms';
+
 
 const App: React.FC = () => {
   return (
     <Providers>
       <StyledSite>
         <Router>
-          <StyledSidebarContainer>
-            <Sidebar />
-          </StyledSidebarContainer>
           <MainWrapper>
-            <Switch>
-              <Route path="/" exact>
-                <Dashboard />
-              </Route>
-              <Route path="/mint">
-                <Redirect to="/bank?action=mint" />
-              </Route>
-              <Route path="/redeem">
-                <Redirect to="/bank?action=redeem" />
-              </Route>
-              <Route path="/bank">
-                <Bank />
-              </Route>
-              <Route path="/staking">
-                <Redirect to="/farms" />
-              </Route>
-              <Route path="/farms">
-                <Farms />
-              </Route>
-              <Redirect to="/" />
-            </Switch>
+            <Farms />
             <Disclaimer />
           </MainWrapper>
         </Router>

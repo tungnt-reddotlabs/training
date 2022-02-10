@@ -10,7 +10,6 @@ export const ModalUpper = styled.div`
   grid-auto-rows: auto;
   grid-template-rows: 1fr;
   grid-gap: 15px;
-  border-bottom: dashed 1px ${(props) => props.theme.color.grey[800]};
 `;
 
 export const ModalCenter = styled.div`

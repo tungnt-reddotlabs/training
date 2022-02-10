@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { useCallback, useContext, useRef } from 'react';
 
 import { Context } from '../contexts/Modals';

@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo } from 'react';
 import { useCallback } from 'react';
-import { FarmPoolData, PartnerFarmPoolData } from 'src/api/backend-api';
+
 import Loading from 'src/components/Loading';
 import TokenSymbol from 'src/components/TokenSymbol';
-import { PoolConfig } from 'src/iron-bank/config';
+import { PoolConfig } from 'src/tnh-contract/config';
 import theme from 'src/theme';
 import { numberWithCommas } from 'src/utils/formatBN';
 import styled from 'styled-components';
@@ -20,7 +20,6 @@ export type FarmItemProps = {
   poolConfig: PoolConfig;
   expanded: boolean;
   toggle: (index: number) => void;
-  data: FarmPoolData | PartnerFarmPoolData;
   visible: boolean;
   onlyDeposit?: boolean;
   updatePoolDeposit?: (index: number, deposit: boolean) => void;
@@ -33,7 +32,6 @@ const FarmItem: React.FC<FarmItemProps> = ({
   expanded,
   toggle,
   updatePoolDeposit,
-  data,
   onlyDeposit,
 }) => {
   const {
@@ -87,38 +85,7 @@ const FarmItem: React.FC<FarmItemProps> = ({
     [farmUrl, toggle, index],
   );
 
-  const tvl = useMemo(() => {
-    if (!data?.tvl) {
-      return;
-    }
-    return (+data?.tvl).toFixed(0);
-  }, [data]);
 
-  const apr = useMemo(() => {
-    if (!data?.apr) {
-      return;
-    }
-    return parseFloat(data?.apr + '').toFixed(0);
-  }, [data]);
-
-  const apy = useMemo(() => {
-    if (!data?.apr) {
-      return;
-    }
-    const numberOfCompoundingPerYear = 365; // daily compound
-    const apr = parseFloat(data?.apr + '') / 100;
-    const apy =
-      100 * (Math.pow(1 + apr / numberOfCompoundingPerYear, numberOfCompoundingPerYear) - 1);
-    return apy.toFixed(0);
-  }, [data]);
-
-  const rewardPerDay = useMemo(() => {
-    if (!data?.rewardPerBlock) {
-      return;
-    }
-    const numberOfBlockPerDay = (3600 * 24) / 2;
-    return numberWithCommas((parseFloat(data.rewardPerBlock) * numberOfBlockPerDay).toFixed(0));
-  }, [data]);
 
   const myShare = BigNumber.from(0);
 
@@ -172,54 +139,15 @@ const FarmItem: React.FC<FarmItemProps> = ({
             </StyledHeaderIconWrapper>
             <StyledHeaderStatus>
               <StyledHeaderTitle>{rewardToken}</StyledHeaderTitle>
-              <StyledHeaderSubTitle>
-                {rewardPerDay && (
-                  <>
-                    {rewardPerDay} {rewardToken} per day
-                  </>
-                )}
-              </StyledHeaderSubTitle>
+
             </StyledHeaderStatus>
           </StyledHeaderCell>
           <StyledHeaderCell paddingLeft={10} hiddenXs={true}>
             <StyledHeaderDataValue highlight={true}>$0</StyledHeaderDataValue>
           </StyledHeaderCell>
           <StyledHeaderCell paddingLeft={14} hiddenXs={true}>
-            <StyledHeaderDataValue>
-              {tvl ? (
-                '$' + numberWithCommas(tvl)
-              ) : (
-                <Loading size={'16px'} color={theme.color.white} />
-              )}
-            </StyledHeaderDataValue>
           </StyledHeaderCell>
           <StyledHeaderCell paddingLeft={18} hiddenXs={true}>
-            <StyledHeaderDataValue>
-              <div className="line">
-                <span className="field">APR</span>
-                <div className="value">
-                  {apr ? (
-                    numberWithCommas(apr) + '%'
-                  ) : farmUrl ? (
-                    '-'
-                  ) : (
-                    <Loading size={'16px'} color={theme.color.white} />
-                  )}
-                </div>
-              </div>
-              <div className="line">
-                <span className="field">APY</span>
-                <div className="value">
-                  {apy ? (
-                    numberWithCommas(apy) + '%'
-                  ) : farmUrl ? (
-                    '-'
-                  ) : (
-                    <Loading size={'16px'} color={theme.color.white} />
-                  )}
-                </div>
-              </div>
-            </StyledHeaderDataValue>
           </StyledHeaderCell>
           <StyledHeaderCell>
             {farmUrl ? (
@@ -234,44 +162,12 @@ const FarmItem: React.FC<FarmItemProps> = ({
           </StyledHeaderCell>
         </StyledHeader>
         <StyledSubheaderMobile>
-          <StyledSubheaderCell>
-            TVL:
-            <StyledHeaderDataValue>
-              {tvl ? (
-                '$' + numberWithCommas(tvl)
-              ) : (
-                <Loading size={'16px'} color={theme.color.white} />
-              )}
-            </StyledHeaderDataValue>
-          </StyledSubheaderCell>
-          <StyledSubheaderCell>
-            APR:
-            <StyledHeaderDataValue>
-              {apr ? (
-                numberWithCommas(apr) + '%'
-              ) : farmUrl ? (
-                '-'
-              ) : (
-                <Loading size={'16px'} color={theme.color.white} />
-              )}
-            </StyledHeaderDataValue>
-          </StyledSubheaderCell>
+    
           <StyledSubheaderCell>
             Deposited:
             <StyledHeaderDataValue highlight={true}>$0</StyledHeaderDataValue>
           </StyledSubheaderCell>
-          <StyledSubheaderCell>
-            APY:
-            <StyledHeaderDataValue>
-              {apy ? (
-                numberWithCommas(apy) + '%'
-              ) : farmUrl ? (
-                '-'
-              ) : (
-                <Loading size={'16px'} color={theme.color.white} />
-              )}
-            </StyledHeaderDataValue>
-          </StyledSubheaderCell>
+
         </StyledSubheaderMobile>
         {expanded && !farmUrl ? (
           <StyledContent>

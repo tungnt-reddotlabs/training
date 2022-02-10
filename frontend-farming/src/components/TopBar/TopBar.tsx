@@ -25,7 +25,6 @@ const TopBar: React.FC<TopBarProps> = ({ home }) => {
             <Logo />
           </StyledLogoContainer>
           <StyledButtonGroup>
-            <BuyShareButton />
             <SelectChainButton />
             <AccountButton />
           </StyledButtonGroup>

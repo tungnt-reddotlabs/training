@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { Call, multicall } from 'src/iron-bank/multicall';
+import { Call, multicall } from 'src/tnh-contract/multicall';
 import { useConfiguration } from 'src/contexts/ConfigProvider/ConfigProvider';
 import { useWeb3React } from '@web3-react/core';
 import { JsonRpcProvider } from '@ethersproject/providers';
