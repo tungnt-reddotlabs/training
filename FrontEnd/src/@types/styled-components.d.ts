@@ -2,7 +2,6 @@ import 'styled-components';
 
 declare module 'styled-components' {
   interface DefaultTheme {
-    bg: string;
     colors: {
       background: string;
       foreground: string;

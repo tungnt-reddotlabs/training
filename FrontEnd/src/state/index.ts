@@ -4,10 +4,7 @@ import application, { initialState } from './application/reducer';
 import transactions from './transactions/reducer';
 import user, { initialState as userInitialState } from './user/reducer';
 import tokens, { initialState as tokensInitialState } from './tokens/reducer';
-import stableswap from './stableswap/reducer';
-import stablepool from './stablepool/reducer';
 import farms, { initialState as farmsInitialState } from './farms/reducer';
-import staking, { initialState as stakingInitialState } from './staking/reducer';
 
 const PERSISTED_KEYS: string[] = [
   'user.account',
@@ -23,10 +20,7 @@ export const store = configureStore({
     transactions,
     user,
     tokens,
-    stableswap,
-    stablepool,
     farms,
-    staking,
   },
   middleware: [
     ...getDefaultMiddleware({
@@ -47,7 +41,6 @@ export const store = configureStore({
       user: { ...userInitialState },
       tokens: { ...tokensInitialState },
       farms: { ...farmsInitialState },
-      staking: { ...stakingInitialState },
     },
   }),
 });

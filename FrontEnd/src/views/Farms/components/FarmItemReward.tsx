@@ -6,7 +6,6 @@ import { screenUp } from '../../../utils/styles';
 import FarmButtonClaimReward from './FarmButtonClaimReward';
 import { FarmPoolConfig } from '../../../models/Farm';
 import { BigNumber } from '@ethersproject/bignumber';
-import { TokenSymbol } from '../../../components/TokenSymbol';
 import { BigNumberValue } from '../../../components/BigNumberValue';
 
 export type FarmItemRewardProps = {
@@ -27,7 +26,6 @@ const FarmItemReward: React.FC<FarmItemRewardProps> = ({ poolConfig, pendingRewa
       </StyledHeader>
       <StyledControl>
         <StyledEarnInfo>
-          <TokenSymbol symbol={rewardTokenInfo?.symbol} size={42} />
           <StyledInfo>
             {rewardTokenInfo?.symbol}
             <div className="value">

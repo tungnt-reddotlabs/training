@@ -39,14 +39,6 @@ export const NavBar: React.FC = () => {
 
   return (
     <StyledContainer open={isOpen}>
-      <StyledHeader>
-        <StyledLogoNavLink to="/">
-          <img src={logo} />
-        </StyledLogoNavLink>
-        <StyledButtonClose onClick={onClickItem}>
-          <i className="fal fa-times" />
-        </StyledButtonClose>
-      </StyledHeader>
       <StyledPrice onClick={show1SwapModal}>
         <div className="logo">
           <img src={logoReward} />
@@ -58,70 +50,6 @@ export const NavBar: React.FC = () => {
           <img src={metamask} />
         </button>
       </StyledPrice>
-      <StyledLinkBuy href={ExternalLinks.buy1SwapSolarbeam} target="_blank" className="buy">
-        <i className="far fa-shopping-cart"></i>
-        <span>Buy 1SWAP</span>
-      </StyledLinkBuy>
-      <StyledNav>
-        {/* <StyledNavItem>
-          <StyledNavLink onClick={onClickItem} to="/" exact>
-            Swap
-          </StyledNavLink>
-        </StyledNavItem>
-        <StyledNavItem>
-          <StyledNavLink onClick={onClickItem} to="/pools">
-            Pools
-          </StyledNavLink>
-        </StyledNavItem> */}
-        <StyledNavItem>
-          <StyledNavLink onClick={onClickItem} to="/farms">
-            Farms
-          </StyledNavLink>
-        </StyledNavItem>
-        {/* <StyledNavItem>
-          <StyledNavLink onClick={onClickItem} to="/staking">
-            Staking
-          </StyledNavLink>
-        </StyledNavItem>
-        <ButtonMore /> */}
-        <StyledLine />
-        {/* <StyledNavItem>
-          <StyledNavExternalLink
-            href={ExternalLinks.documentations}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentations
-          </StyledNavExternalLink>
-        </StyledNavItem>
-        <StyledNavItem>
-          <StyledNavExternalLink
-            href={ExternalLinks.codes}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Codes
-          </StyledNavExternalLink>
-        </StyledNavItem>
-        <StyledNavItem>
-          <StyledNavExternalLink
-            href={ExternalLinks.medium}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Medium
-          </StyledNavExternalLink>
-        </StyledNavItem>
-        <StyledNavItem>
-          <StyledNavExternalLink
-            href={ExternalLinks.twitter}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Twitter
-          </StyledNavExternalLink>
-        </StyledNavItem> */}
-      </StyledNav>
     </StyledContainer>
   );
 };

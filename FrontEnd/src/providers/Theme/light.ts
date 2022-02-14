@@ -1,8 +1,7 @@
 import { DefaultTheme } from 'styled-components';
-import bg from '../../assets/images/bg-light@2x.webp';
+
 
 const theme: DefaultTheme = {
-  bg: bg,
   colors: {
     background: '#1d5066',
     foreground: '#ffffff',

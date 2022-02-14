@@ -5,7 +5,7 @@ import { ButtonConnect } from '../../Buttons';
 import { InjectedConnector } from '@web3-react/injected-connector';
 import styled from 'styled-components';
 import { usePendingTransactionCount } from '../../../state/transactions/hooks';
-import { config, networkUrls, supportedChainIds } from '../../../config';
+
 import { NetworkConnector } from '../../../libs/NetworkConnector';
 import { useSavedConnector } from '../../../state/user/hooks';
 import { ConnectorName } from '../../../state/user/reducer';
@@ -18,10 +18,9 @@ import { useToggleMainNav } from '../../../state/application/hooks';
 import logo from '../../../assets/images/logo.svg';
 import { NavBar } from './components/NavBar';
 import { NavLink } from 'react-router-dom';
-import { BigNumberValue } from '../../BigNumberValue';
-import { useTvl } from '../../../hooks/useTvl';
 import avatar from '../../../assets/icons/avatar.svg';
-import Button1Swap from './components/Button1Swap';
+import { supportedChainIds,  networkUrls, config} from '../../../config';
+import { } from '../../../config';
 
 const connectors: Record<ConnectorName, AbstractConnector> = {
   injected: new InjectedConnector({
@@ -40,7 +39,6 @@ const Header: React.FC = () => {
   const savedConnector = useSavedConnector();
   const pendingTransactionCount = usePendingTransactionCount();
   const toggleMainNav = useToggleMainNav();
-  const tvl = useTvl();
 
   useEffect(() => {
     if (!account && savedConnector && savedConnector === 'injected') {
@@ -85,20 +83,8 @@ const Header: React.FC = () => {
   return (
     <StyledHeader>
       <ButtonToggleMenu className="far fa-bars" onClick={onToggleClick} />
-      <LeftSide>
-        <StyledLogoNavLink to="/">
-          <Logo src={logo} />
-        </StyledLogoNavLink>
-        {/* <StyledTvl>
-          TVL:{' '}
-          <span>
-            <BigNumberValue value={tvl} decimals={18} fractionDigits={0} currency="USD" />
-          </span>
-        </StyledTvl> */}
-      </LeftSide>
       <NavBar />
       <RightSide>
-        {/* <Button1Swap /> */}
         {account ? (
           <ButtonAccount onClick={showAccountModal}>
             <AccountInfo>
@@ -177,14 +163,7 @@ const RightSide = styled.div`
   `}
 `;
 
-const StyledLogoNavLink = styled(NavLink)`
-  display: flex;
-  align-items: center;
-  ${screenUp('lg')`
-    position: relative;
-    z-index: 10002;
-  `}
-`;
+
 
 const ButtonAccount = styled.button`
   display: flex;

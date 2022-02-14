@@ -9,7 +9,6 @@ export const GlobalStyle = createGlobalStyle`
     margin: 0;
     background-color: ${(p) => p.theme.colors.background};
     color: ${(p) => p.theme.colors.foreground};
-    background-image: url(${(p) => p.theme.bg});
     background-size: cover;
     background-repeat: no-repeat;
     background-position: bottom center;

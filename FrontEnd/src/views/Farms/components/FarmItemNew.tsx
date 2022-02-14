@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Zero } from '@ethersproject/constants';
 import FarmDeposit from './FarmDeposit';
 import FarmWithdraw from './FarmWithdraw';
-import { TokenSymbol } from '../../../components/TokenSymbol';
 import { screenUp } from '../../../utils/styles';
 import { FarmingPoolInfo } from '../../../models/Farm';
 import FarmItemReward from './FarmItemReward';
@@ -29,7 +28,6 @@ export type FarmItemProps = {
 
 const FarmItem: React.FC<FarmItemProps> = ({ index, pool }) => {
   const farmUrl = useMemo(() => pool?.poolConfig?.farmUrl, [pool]);
-  const partnerFarmInfo = pool?.partnerPoolInfo;
   const userPoolInfo = pool?.userInfo;
   const wantPrice = useTokenPrice(pool?.poolConfig?.wantSymbol);
   const rewardPrice = useTokenPrice(pool?.poolConfig?.rewardToken);
@@ -90,14 +88,6 @@ const FarmItem: React.FC<FarmItemProps> = ({ index, pool }) => {
       <CollapseItem id={index}>
         <StyledHeader coming={!isStartSentReward}>
           <StyledFarmToken>
-            <TokenSymbol
-              symbol={
-                pool?.poolConfig?.wantSymbol === '1S3P'
-                  ? `${pool?.poolConfig?.wantSymbol}_LP`
-                  : pool?.poolConfig?.wantSymbol
-              }
-              size={47}
-            />
             <div>
               <StyledSymbol>{farmName}</StyledSymbol>
               <StyledReward>
@@ -144,43 +134,6 @@ const FarmItem: React.FC<FarmItemProps> = ({ index, pool }) => {
                   )}
                 </StyledValue>
               </StyledRow>
-              {/* <StyledRow>
-                <StyledTitle>TVL</StyledTitle>
-                <StyledValue>
-                  {farmUrl ? (
-                    partnerFarmInfo?.tvl ? (
-                      `$${partnerFarmInfo?.tvl}`
-                    ) : (
-                      '-'
-                    )
-                  ) : totalValueLocked?.gt(Zero) ? (
-                    <>
-                      <BigNumberValue
-                        value={totalValueLocked}
-                        decimals={18}
-                        fractionDigits={0}
-                        currency="USD"
-                      />
-                    </>
-                  ) : (
-                    '-'
-                  )}
-                </StyledValue>
-              </StyledRow>
-              <StyledRow>
-                <StyledTitle>APR</StyledTitle>
-                <StyledValue>
-                  {farmUrl ? (
-                    partnerFarmInfo?.apr ? (
-                      partnerFarmInfo?.apr + '%'
-                    ) : (
-                      '-'
-                    )
-                  ) : (
-                    <BigNumberValue value={apr} decimals={18} percentage fractionDigits={0} />
-                  )}
-                </StyledValue>
-              </StyledRow> */}
             </StyledHeaderInfo>
           ) : (
             <StyledComing>

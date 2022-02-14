@@ -8,7 +8,6 @@ import Modal, {
 import { useWeb3React } from '@web3-react/core';
 import { useDisconnectAccount } from '../../state/user/hooks';
 import styled from 'styled-components';
-import AccountTransactions from './AccountTransactions';
 import { shortenAddress } from '../../utils/addresses';
 import { ExplorerLink } from '../ExplorerLink';
 import avatar from '../../assets/icons/avatar.svg';
@@ -40,7 +39,6 @@ const AccountModal: React.FC<ModalProps> = ({ onDismiss }) => {
           <i className="far fa-external-link"></i>
         </ExplorerLink>
       </StyledAccountInfo>
-      <AccountTransactions />
       <StyledAction>
         <StyledDisconnect onClick={disconnect}>Disconnect</StyledDisconnect>
       </StyledAction>
