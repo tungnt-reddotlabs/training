@@ -71,9 +71,9 @@ export const ModalSelectWallet: React.FC<ModalSelectWalletProps> = ({ onDismiss 
             addPopup({
               type: 'error',
               title: 'Unsupported network',
-              message: 'Please connect to MoonRiver network',
+              message: 'Please connect to Polygon network',
             });
-            const params = CHAINS[0x505];
+            const params = CHAINS[0x89];
             await window.ethereum.request({
               method: 'wallet_addEthereumChain',
               params: [params],
@@ -110,26 +110,6 @@ export const ModalSelectWallet: React.FC<ModalSelectWalletProps> = ({ onDismiss 
           MetaMask
           <img src={MetamaskLogo} />
         </StyledWallet>
-        {/* <StyledWallet data-connector-name="walletconnect" onClick={connect}>
-          Wallet Connect
-          <img src={WalletConnectLogo} />
-        </StyledWallet>
-        <StyledWallet data-connector-name="injected" onClick={connect}>
-          Math Wallet
-          <img src={MathWalletLogo} />
-        </StyledWallet>
-        <StyledWallet data-connector-name="injected" onClick={connect}>
-          Trust Wallet
-          <img src={TrustWalletLogo} />
-        </StyledWallet>
-        <StyledWallet data-connector-name="injected" onClick={connect}>
-          Token Pocket
-          <img src={TokenPocketLogo} />
-        </StyledWallet>
-        <StyledWallet data-connector-name="injected" onClick={connect}>
-          Safe Wallet
-          <img src={safeWalletLogo} />
-        </StyledWallet> */}
       </StyledModalContent>
     </Modal>
   );
