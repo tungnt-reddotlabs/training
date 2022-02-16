@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useToken } from '../../../hooks/useToken';
-import useVaulExternalLink from '../hooks/useVaultExternalLink';
 import { screenUp } from '../../../utils/styles';
 import VaulButtonClaimReward from './VaultButtonClaimReward';
 import { VaulPoolConfig } from '../../../models/Vault';
 import { BigNumber } from '@ethersproject/bignumber';
 import { BigNumberValue } from '../../../components/BigNumberValue';
+import VaultButtonCompound from './VaultButtonCompound';
+import Spacer from '../../../components/Spacer';
 
 export type VaulItemRewardProps = {
   poolConfig: VaulPoolConfig;
@@ -15,9 +16,6 @@ export type VaulItemRewardProps = {
 
 const VaulItemReward: React.FC<VaulItemRewardProps> = ({ poolConfig, pendingReward }) => {
   const rewardTokenInfo = useToken(poolConfig?.rewardToken);
-  const lpToken = useToken(poolConfig?.wantSymbol);
-  const { createAddLiquidityLink, createRemoveLiquidityLink, getBuyTokenUrl } =
-    useVaulExternalLink();
 
   return (
     <StyledContainer>
@@ -37,44 +35,12 @@ const VaulItemReward: React.FC<VaulItemRewardProps> = ({ poolConfig, pendingRewa
               />
             </div>
           </StyledInfo>
-          <VaulButtonClaimReward minichef={poolConfig?.minichef} poolId={poolConfig?.id} />
         </StyledEarnInfo>
-        {poolConfig?.isLp ? (
-          <StyledLiquidity>
-            <a
-              href={createAddLiquidityLink(
-                poolConfig?.market,
-                poolConfig?.wantTokens[0],
-                poolConfig?.wantTokens[1],
-                lpToken?.address,
-              )}
-              target="_blank"
-            >
-              Add liquidity
-            </a>
-            <a
-              href={createRemoveLiquidityLink(
-                poolConfig?.market,
-                poolConfig?.wantTokens[0],
-                poolConfig?.wantTokens[1],
-                lpToken?.address,
-              )}
-              target="_blank"
-            >
-              Remove liquidity
-            </a>
-          </StyledLiquidity>
-        ) : (
-          <StyledLiquidity>
-            <a
-              className="single"
-              href={getBuyTokenUrl(poolConfig?.wantTokens[0])}
-              target="_blank"
-            >
-              Buy {poolConfig?.wantTokens[0]}
-            </a>
-          </StyledLiquidity>
-        )}
+        <StyledActions>
+          <VaulButtonClaimReward minichef={poolConfig?.minichef} poolId={poolConfig?.id} />
+          <Spacer size="sm" />
+          <VaultButtonCompound pool={poolConfig}></VaultButtonCompound>
+        </StyledActions>
       </StyledControl>
     </StyledContainer>
   );
@@ -112,7 +78,7 @@ const StyledControl = styled.div`
 const StyledEarnInfo = styled.div`
   display: flex;
   align-items: center;
-  padding-bottom: 20px;
+  margin-bottom: 20px;
 `;
 
 const StyledInfo = styled.div`
@@ -128,29 +94,10 @@ const StyledInfo = styled.div`
   }
 `;
 
-const StyledLiquidity = styled.div`
+const StyledActions = styled.div`
   display: flex;
-  justify-content: space-around;
   align-items: center;
-  margin: 0 auto;
-  a {
-    display: block;
-    padding: 0px;
-    margin-top: 9px;
-    font-size: 13px;
-    font-weight: bold;
-    color: #3085b1;
-    text-decoration: none;
-    :hover {
-      text-decoration: underline;
-    }
-  }
-  ${screenUp('lg')`
-    display: flex;
-    a {
-      font-size: 14px;
-    }
-  `}
+  justify-content: center;
 `;
 
 export default VaulItemReward;
