@@ -15,10 +15,7 @@ import useModal from '../../../hooks/useModal';
 import AccountModal from '../../AccountModal/AccountModal';
 import { screenUp } from '../../../utils/styles';
 import { useToggleMainNav } from '../../../state/application/hooks';
-import logo from '../../../assets/images/logo.svg';
 import { NavBar } from './components/NavBar';
-import { NavLink } from 'react-router-dom';
-import avatar from '../../../assets/icons/avatar.svg';
 import { supportedChainIds,  networkUrls, config} from '../../../config';
 import { } from '../../../config';
 
@@ -84,7 +81,7 @@ const Header: React.FC = () => {
     <StyledHeader>
       <ButtonToggleMenu className="far fa-bars" onClick={onToggleClick} />
       <NavBar />
-      <RightSide>
+      <Side>
         {account ? (
           <ButtonAccount onClick={showAccountModal}>
             <AccountInfo>
@@ -99,9 +96,6 @@ const Header: React.FC = () => {
                 </>
               ) : (
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <div className="account-icon">
-                    <img src={avatar} />
-                  </div>
                   <span>{shortenAccount}</span>
                 </div>
               )}
@@ -110,7 +104,7 @@ const Header: React.FC = () => {
         ) : (
           <ButtonConnectHeader height="40px" />
         )}
-      </RightSide>
+      </Side>
     </StyledHeader>
   );
 };
@@ -127,31 +121,7 @@ const StyledHeader = styled.header`
   `}
 `;
 
-const LeftSide = styled.div`
-  display: flex;
-  align-items: center;
-  ${screenUp('lg')`
-    width: 750px;
-  `}
-`;
-
-const StyledTvl = styled.div`
-  display: none;
-  padding-left: 20px;
-  font-size: 16px;
-  font-weight: normal;
-  color: ${({ theme }) => theme.colors.foreground};
-  span {
-    font-size: 18px;
-    font-weight: bold;
-    color: ${({ theme }) => theme.colors.header.tvl};
-  }
-  ${screenUp('lg')`
-    display: inline;
-  `}
-`;
-
-const RightSide = styled.div`
+const Side = styled.div`
   margin-left: auto;
   display: flex;
   align-items: center;
@@ -174,7 +144,7 @@ const ButtonAccount = styled.button`
   height: 40px !important;
   display: flex;
   align-items: center;
-  padding: 0px 10px 0px 0px;
+  padding: 0px 10px;
   transition: ease-in-out 100ms;
   white-space: nowrap;
   border: 1px solid ${({ theme }) => theme.colors.header.border};
@@ -191,18 +161,6 @@ const AccountInfo = styled.div`
   font-size: 16px;
   font-weight: normal;
   color: ${({ theme }) => theme.colors.secondary};
-  .account-icon {
-    margin-right: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 38px;
-    height: 39px;
-    background-color: #5e74a5;
-    img {
-      width: 20px;
-    }
-  }
   i.far {
     font-size: 14px;
     color: ${({ theme }) => theme.colors.secondary};
@@ -211,12 +169,6 @@ const AccountInfo = styled.div`
 
 const ButtonConnectHeader = styled(ButtonConnect)``;
 
-const Logo = styled.img`
-  width: 80px;
-  ${screenUp('lg')`
-    width: 100px;
-  `}
-`;
 
 const ButtonToggleMenu = styled.i<{ isClose?: boolean }>`
   color: ${({ theme }) => theme.colors.foreground};

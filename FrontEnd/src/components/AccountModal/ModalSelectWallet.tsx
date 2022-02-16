@@ -13,11 +13,6 @@ import Modal, {
   ModalTitle,
 } from '../Modal/ModalStyles';
 import MetamaskLogo from '../../assets/images/wallets/Metamask.png';
-import WalletConnectLogo from '../../assets/images/wallets/WalletConnect.png';
-import TrustWalletLogo from '../../assets/images/wallets/TrustWallet.svg';
-import MathWalletLogo from '../../assets/images/wallets/MathWallet.svg';
-import safeWalletLogo from '../../assets/images/wallets/SafeWallet.svg';
-import TokenPocketLogo from '../../assets/images/wallets/TokenPocker.svg';
 import { useDispatch } from 'react-redux';
 import { connectToAccount } from '../../state/user/actions';
 import { ConnectorName } from '../../state/user/reducer';

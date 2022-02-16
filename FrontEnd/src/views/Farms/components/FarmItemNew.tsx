@@ -1,18 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { Zero } from '@ethersproject/constants';
 import FarmDeposit from './FarmDeposit';
 import FarmWithdraw from './FarmWithdraw';
 import { screenUp } from '../../../utils/styles';
 import { FarmingPoolInfo } from '../../../models/Farm';
 import FarmItemReward from './FarmItemReward';
-import { BigNumberValue } from '../../../components/BigNumberValue';
 import { useMemo } from 'react';
-import { useTokenPrice } from '../../../state/tokens/hooks';
-import { PricePrecision } from '../../../utils/constants';
-import { isPast } from '../../../utils/times';
-import { FarmItemCountdown } from './FarmItemCountdown';
-import iconTimer from '../../../assets/icons/timer.svg';
 import {
   CollapseBody,
   CollapseButton,
@@ -27,12 +20,7 @@ export type FarmItemProps = {
 };
 
 const FarmItem: React.FC<FarmItemProps> = ({ index, pool }) => {
-  const farmUrl = useMemo(() => pool?.poolConfig?.farmUrl, [pool]);
   const userPoolInfo = pool?.userInfo;
-  const wantPrice = useTokenPrice(pool?.poolConfig?.wantSymbol);
-  const rewardPrice = useTokenPrice(pool?.poolConfig?.rewardToken);
-  const startRewardTime = pool?.poolConfig?.startRewardTime || 0;
-  const [isStartSentReward, setIsStartSentReward] = useState(isPast(startRewardTime));
 
   const farmName = useMemo(() => {
     return pool?.poolConfig?.name
@@ -41,51 +29,10 @@ const FarmItem: React.FC<FarmItemProps> = ({ index, pool }) => {
       }`;
   }, [pool?.poolConfig?.name, pool?.poolConfig?.wantTokens]);
 
-  const depositedValue = useMemo(() => {
-    return userPoolInfo && wantPrice
-      ? userPoolInfo?.amount?.mul(wantPrice)?.div(PricePrecision)
-      : null;
-  }, [userPoolInfo, wantPrice]);
-
-  const totalValueLocked = useMemo(() => {
-    return pool?.poolInfo?.totalStaked && wantPrice
-      ? pool?.poolInfo?.totalStaked?.mul(wantPrice)?.div(PricePrecision)
-      : null;
-  }, [pool, wantPrice]);
-
-  const poolShare = useMemo(() => {
-    if (!depositedValue || !totalValueLocked || totalValueLocked.eq(Zero)) {
-      return;
-    }
-    return depositedValue.mul(PricePrecision).div(totalValueLocked);
-  }, [depositedValue, totalValueLocked]);
-
-  const rewardPerDay = useMemo(() => {
-    if (!pool?.poolInfo) {
-      return;
-    }
-
-    const { allocPoint, totalAllocPoint, rewardPerSecond } = pool.poolInfo;
-    if (totalAllocPoint?.eq(0)) {
-      return Zero;
-    }
-    return allocPoint?.mul(rewardPerSecond)?.mul(86400)?.div(totalAllocPoint);
-  }, [pool]);
-
-  const apr = useMemo(() => {
-    if (!rewardPrice || !rewardPerDay || !totalValueLocked) {
-      return;
-    }
-    if (totalValueLocked?.eq(Zero)) {
-      return Zero;
-    }
-    return rewardPrice?.mul(rewardPerDay)?.mul(365)?.div(totalValueLocked);
-  }, [rewardPerDay, rewardPrice, totalValueLocked]);
-
   return (
     <StyledContainer>
       <CollapseItem id={index}>
-        <StyledHeader coming={!isStartSentReward}>
+        <StyledHeader>
           <StyledFarmToken>
             <div>
               <StyledSymbol>{farmName}</StyledSymbol>
@@ -100,57 +47,16 @@ const FarmItem: React.FC<FarmItemProps> = ({ index, pool }) => {
               </StyledReward>
             </div>
           </StyledFarmToken>
-          {isStartSentReward ? (
-            <StyledHeaderInfo>
-              {/* <StyledRow>
-                <StyledTitle>Deposited</StyledTitle>
-                <StyledValue>
-                  {depositedValue?.gt(Zero) ? (
-                    <>
-                      <BigNumberValue
-                        value={depositedValue}
-                        decimals={18}
-                        fractionDigits={2}
-                        currency="USD"
-                      />
-                      <span className="sub-value">
-                        (
-                        <BigNumberValue
-                          value={poolShare}
-                          percentage
-                          decimals={18}
-                          fractionDigits={4}
-                        />
-                        )
-                      </span>
-                    </>
-                  ) : (
-                    '-'
-                  )}
-                </StyledValue>
-              </StyledRow> */}
-            </StyledHeaderInfo>
-          ) : (
-            <StyledComing>
-              <img src={iconTimer} />
-              <FarmItemCountdown
-                to={startRewardTime}
-                onArrived={() => setIsStartSentReward(true)}
-              />
-            </StyledComing>
-          )}
-          {isStartSentReward && (
-            <CollapseButton id={index}>
-              <StyledButton>
-                <CollapseOpen id={index}>
-                  <i className="fal fa-chevron-down" />
-                </CollapseOpen>
-                <CollapseClose id={index}>
-                  <i className="fal fa-chevron-up" />
-                </CollapseClose>
-              </StyledButton>
-            </CollapseButton>
-          )}
+          <CollapseButton id={index}>
+            <StyledButton>
+              <CollapseOpen id={index}>
+                <i className="fal fa-chevron-down" />
+              </CollapseOpen>
+              <CollapseClose id={index}>
+                <i className="fal fa-chevron-up" />
+              </CollapseClose>
+            </StyledButton>
+          </CollapseButton>
         </StyledHeader>
       </CollapseItem>
       <CollapseBody id={index}>
@@ -177,23 +83,6 @@ const FarmItem: React.FC<FarmItemProps> = ({ index, pool }) => {
   );
 };
 
-const StyledComing = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: auto;
-  img {
-    display: none;
-    width: 30px;
-    margin-right: 16px;
-  }
-  ${screenUp('lg')`
-    img {
-      display: block;
-    }
-  `}
-`;
-
 const StyledContainer = styled.div<{ isExpand?: boolean }>`
   width: 100%;
   cursor: ${({ isExpand }) => (isExpand ? 'auto' : 'pointer')};
@@ -211,11 +100,10 @@ const StyledContainer = styled.div<{ isExpand?: boolean }>`
 const StyledHeader = styled.div<{ coming?: boolean }>`
   display: block;
   padding: 22px 0px;
-  ${(p) => screenUp('lg')`
-    display: ${p.coming ? 'flex' : 'grid'};
+  ${() => screenUp('lg')`
+    display: flex;
     align-items: center;
-    grid-template-columns: 6fr 12fr 1fr;
-    grid-gap: 10px;
+    justify-content: space-between
   `}
 `;
 
@@ -241,58 +129,10 @@ const StyledSymbol = styled.div`
 `;
 
 const StyledReward = styled.div`
-  font-size: 12px;
-  font-weight: normal;
+  font-size: 13px;
+  font-weight: bold;
   color: #555a71;
   padding-top: 8px;
-`;
-
-const StyledHeaderInfo = styled.div`
-  display: block;
-  margin-top: 20px;
-  ${screenUp('lg')`
-    margin-top: 0px;
-    display: grid;
-    grid-template-columns: 4fr 3fr 3fr;
-    grid-gap: 10px;
-  `}
-`;
-
-const StyledRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  :not(:last-child) {
-    padding-bottom: 10px;
-  }
-  ${screenUp('lg')`
-    display: block;
-    :not(:last-child) {
-      padding-bottom: 0px;
-    }
-  `}
-`;
-
-const StyledTitle = styled.div`
-  font-size: 14px;
-  font-weight: normal;
-  color: #555a71;
-`;
-
-const StyledValue = styled.div`
-  font-size: 16px;
-  font-weight: bold;
-  color: #070a10;
-  padding-top: 0px;
-  .sub-value {
-    margin-left: 5px;
-    font-size: 12px;
-    color: #999;
-    font-weight: 600;
-  }
-  ${screenUp('lg')`
-    padding-top: 10px;
-  `}
 `;
 
 const StyledButton = styled.div`

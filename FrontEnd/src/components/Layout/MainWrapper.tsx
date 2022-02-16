@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import styled from 'styled-components';
 import { useIsMainNavOpen, useSetMainNavOpen } from '../../state/application/hooks';
 import { screenUp } from '../../utils/styles';
+import bgSite from '../../assets/bg-main.svg';
 
 export const MainWrapper: React.FC = ({ children }) => {
   const setMainNavOpen = useSetMainNavOpen();
@@ -22,6 +23,11 @@ export const MainWrapper: React.FC = ({ children }) => {
 };
 
 const StyledMain = styled.main<{ mainNavOpen: boolean }>`
+  background-image: url(${bgSite});
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: contain;
+  background-attachment: fixed;
   grid-area: main;
   position: relative;
   &::before {

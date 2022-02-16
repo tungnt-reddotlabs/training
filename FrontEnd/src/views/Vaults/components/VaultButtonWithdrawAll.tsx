@@ -8,7 +8,6 @@ import { ButtonOutline } from '../../../components/Buttons';
 import { Zero } from '@ethersproject/constants';
 import { useMemo } from 'react';
 import styled from 'styled-components';
-import { useVaultingPool } from '../../../state/vaults/hooks';
 import { screenUp } from '../../../utils/styles';
 import { VaultingPoolInfo } from '../../../models/Vault';
 

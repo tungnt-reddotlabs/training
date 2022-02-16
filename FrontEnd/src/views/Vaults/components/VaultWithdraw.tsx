@@ -1,5 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import Spacer from '../../../components/Spacer';
 import { useToken } from '../../../hooks/useToken';

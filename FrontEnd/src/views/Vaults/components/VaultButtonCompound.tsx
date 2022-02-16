@@ -1,15 +1,12 @@
 import React, { useMemo, useState } from 'react';
 import { useCallback } from 'react';
-import { Zero } from '@ethersproject/constants';
 import { abi as VaultAbi } from '../../../abis/Vault.json';
 import { useContract } from '../../../hooks/useContract';
 import { TransactionResponse } from '@ethersproject/providers';
 import { useHandleTransactionReceipt } from '../../../hooks/useHandleTransactionReceipt';
 import { useWeb3React } from '@web3-react/core';
-import { useToken } from '../../../hooks/useToken';
 import { ButtonOutline } from '../../../components/Buttons';
 import styled from 'styled-components';
-import { useVaultingPool } from '../../../state/vaults/hooks';
 import { VaulPoolConfig } from '../../../models/Vault';
 
 export type VaultButtonCompoundProps = {

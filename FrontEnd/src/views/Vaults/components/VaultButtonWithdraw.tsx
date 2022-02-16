@@ -8,7 +8,6 @@ import { formatBigNumber } from '../../../utils/numbers';
 import { useWeb3React } from '@web3-react/core';
 import { useToken } from '../../../hooks/useToken';
 import { Button } from '../../../components/Buttons';
-import { useVaultingPool } from '../../../state/vaults/hooks';
 import { screenUp } from '../../../utils/styles';
 import styled from 'styled-components';
 import { VaultingPoolInfo } from '../../../models/Vault';

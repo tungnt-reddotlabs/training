@@ -1,11 +1,9 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
-import Spacer from '../../../components/Spacer';
 import { useToken } from '../../../hooks/useToken';
 import { BigNumberValue } from '../../../components/BigNumberValue';
 import FarmButtonWithdraw from './FarmButtonWithdraw';
-import FarmButtonWithdrawAll from './FarmButtonWithdrawAll';
 import { TokenInputWithMaxButton } from '../../../components/TokenInput/TokenInputWithMaxButton';
 import { screenUp } from '../../../utils/styles';
 import { useFarmingPool, useFarmingPoolConfig } from '../../../state/farms/hooks';

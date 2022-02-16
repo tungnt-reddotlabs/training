@@ -3,7 +3,7 @@ import { DefaultTheme } from 'styled-components';
 
 const theme: DefaultTheme = {
   colors: {
-    background: '#1d5066',
+    background: 'rgb(9, 10, 31)',
     foreground: '#ffffff',
     success: '#03a062',
     secondary: '#afbfce',
@@ -14,7 +14,7 @@ const theme: DefaultTheme = {
       secondary: '#555a71',
     },
     header: {
-      background: 'rgba(16, 50, 81, 0.54)',
+      background: 'rgb(46 63 78 / 54%)',
       border: '#5e74a5',
       avatar: '#32659b',
       avatarHover: '#1b4d6b',

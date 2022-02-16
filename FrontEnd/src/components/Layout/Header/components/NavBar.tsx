@@ -3,10 +3,7 @@ import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { useBodyClass } from '../../../../hooks/useBodyClass';
 import { useIsMainNavOpen, useSetMainNavOpen } from '../../../../state/application/hooks';
-import { ExternalLinks } from '../../../../utils/constants';
 import { screenUp } from '../../../../utils/styles';
-import ButtonMore from './ButtonMore';
-import logo from '../../../../assets/images/logo.svg';
 import logoReward from '../../../../assets/images/logo.png';
 import { useTokenPrice } from '../../../../state/tokens/hooks';
 import { BigNumberValue } from '../../../BigNumberValue';
@@ -76,7 +73,6 @@ const StyledContainer = styled.div<{ open?: boolean }>`
   width: 90%;
   height: 100%;
   justify-content: center;
-  transform: ${(p) => (p.open ? 'translateX(0)' : 'translateX(-100%)')};
   transition: transform 0.2s linear;
   z-index: 999;
   background: #16415c;
@@ -87,28 +83,6 @@ const StyledContainer = styled.div<{ open?: boolean }>`
     transform: none;
     background-color: transparent;
   `}
-`;
-
-const StyledHeader = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  ${screenUp('lg')`
-    display: none;
-  `}
-`;
-
-const StyledLogoNavLink = styled(NavLink)`
-  img {
-    width: 80px;
-  }
-`;
-
-const StyledButtonClose = styled.button`
-  i {
-    color: ${(props) => props.theme.colors.foreground};
-    font-size: 20px;
-  }
 `;
 
 const StyledPrice = styled.div`
@@ -147,35 +121,18 @@ const StyledPrice = styled.div`
   `}
 `;
 
-const StyledLinkBuy = styled.a`
-  margin-top: 14px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #3085b1;
-  font-size: 18px;
-  font-weight: bold;
-  color: #fff;
-  i {
-    margin-right: 12px;
-  }
-  ${screenUp('lg')`
-    display: none;
-  `}
-`;
 
 const StyledNav = styled.ul`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 0;
   ${screenUp('lg')`
     margin: 0 auto;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
   `}
 `;
 
@@ -212,25 +169,5 @@ const StyledNavLink = styled(NavLink)`
     &.active {
       font-weight: bold;
     }
-  `}
-`;
-
-const StyledNavExternalLink = styled.a`
-  margin: 0 0 18px 0;
-  font-size: 18px;
-  font-weight: normal;
-  color: ${(props) => props.theme.colors.secondary};
-  ${screenUp('lg')`
-    display: none;
-  `}
-`;
-
-const StyledLine = styled.div`
-  margin: 20px 0px;
-  width: 100%;
-  height: 1px;
-  background: rgba(172, 183, 208, 0.3);
-  ${screenUp('lg')`
-    display: none;
   `}
 `;

@@ -1,5 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useTokenBalance } from '../../../state/user/hooks';
 import { useToken } from '../../../hooks/useToken';
@@ -8,7 +8,6 @@ import VaulButtonDeposit from './VaultButtonDeposit';
 import { useCallback } from 'react';
 import { TokenInputWithMaxButton } from '../../../components/TokenInput/TokenInputWithMaxButton';
 import { screenUp } from '../../../utils/styles';
-import { useVaultingPoolConfig } from '../../../state/vaults/hooks';
 import { Zero } from '@ethersproject/constants';
 import { VaulPoolConfig } from '../../../models/Vault';
 

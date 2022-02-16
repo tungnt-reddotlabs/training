@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from 'react';
 import { useCallback } from 'react';
-import { Zero } from '@ethersproject/constants';
 import { abi as VaultAbi } from '../../../abis/Vault.json';
 import { useContract } from '../../../hooks/useContract';
 import { TransactionResponse } from '@ethersproject/providers';

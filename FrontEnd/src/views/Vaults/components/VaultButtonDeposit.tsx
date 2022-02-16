@@ -10,7 +10,6 @@ import { useWeb3React } from '@web3-react/core';
 import { useToken } from '../../../hooks/useToken';
 import { Button } from '../../../components/Buttons/Button';
 import { useApprove } from '../../../hooks/useApprove';
-import { useVaultingPool } from '../../../state/vaults/hooks';
 import { Zero } from '@ethersproject/constants';
 import { VaulPoolConfig } from '../../../models/Vault';
 
