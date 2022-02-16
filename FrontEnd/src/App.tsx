@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import { store } from './state';
 import { Updaters } from './state/updaters';
 import Modals from './providers/Modals';
@@ -11,13 +11,14 @@ import { Theme } from './providers/Theme/Theme';
 import Header from './components/Layout/Header';
 import { Popups } from './components/Popups';
 import { MainWrapper } from './components/Layout/MainWrapper';
-import Farms from './views/Farms';
-import Vaults from './views/Vaults';
+import loadable from '@loadable/component';
 
 const getLibrary = (p: ExternalProvider | JsonRpcFetchFunc) => {
   return new Web3Provider(p);
 };
 
+const Farms = loadable(() => import('./views/Farms').then((t) => t.default));
+const Vaults = loadable(() => import('./views/Vaults').then((t) => t.default));
 
 export const App: React.FC = () => {
   return (
@@ -28,6 +29,9 @@ export const App: React.FC = () => {
         <Switch>
           <Route path="/farms" component={Farms} />
           <Route path="/vaults" component={Vaults} />
+          <Route exact path="/">
+            <Redirect to="/farms" />
+          </Route>
         </Switch>
       </MainWrapper>
     </Providers>
