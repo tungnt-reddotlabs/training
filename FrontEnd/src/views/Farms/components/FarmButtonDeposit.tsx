@@ -109,7 +109,7 @@ const FarmButtonDeposit: React.FC<FarmButtonDepositProps> = ({
   }, [status]);
 
   const createStakeTrx = useCallback(async () => {
-    const result = await masterChef?.safeCall.deposit(poolId, amount); 
+    const result = await masterChef?.safeCall.deposit(poolId, amount);
     return result as TransactionResponse;
   }, [account, amount, masterChef, poolId]);
 

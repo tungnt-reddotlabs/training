@@ -10,6 +10,7 @@ import { useToken } from '../../../hooks/useToken';
 import { ButtonOutline } from '../../../components/Buttons';
 import styled from 'styled-components';
 import { useFarmingPool } from '../../../state/farms/hooks';
+import { BigNumber } from '@ethersproject/bignumber';
 
 export type FarmButtonClaimRewardProps = {
   minichef: string;
@@ -25,8 +26,8 @@ const FarmButtonClaimReward: React.FC<FarmButtonClaimRewardProps> = ({ poolId, m
   const [loading, setLoading] = useState(false);
 
   const harvest = useCallback(async () => {
-    return (await masterChef?.safeCall.safeSushiTransfer(account, account)) as TransactionResponse;
-  }, [account, masterChef, poolId]);
+    return (await masterChef?.safeCall.deposit(poolId, BigNumber.from(0))) as TransactionResponse;
+  }, [masterChef, poolId]);
 
   const onHarvest = useCallback(async () => {
     if (!masterChef) return;
