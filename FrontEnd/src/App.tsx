@@ -27,7 +27,7 @@ export const App: React.FC = () => {
       <MainWrapper>
         <Switch>
           <Route path="/farms" component={Farms} />
-          <Route path="/vauls" component={Vaults} />
+          <Route path="/vaults" component={Vaults} />
         </Switch>
       </MainWrapper>
     </Providers>

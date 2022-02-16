@@ -57,7 +57,7 @@ export const NavBar: React.FC = () => {
           </StyledNavLink>
         </StyledNavItem>
         <StyledNavItem>
-          <StyledNavLink onClick={onClickItem} to="/vauls">
+          <StyledNavLink onClick={onClickItem} to="/vaults">
             Vaults
           </StyledNavLink>
         </StyledNavItem>
