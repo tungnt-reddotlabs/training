@@ -80,10 +80,9 @@ const FarmButtonWithdraw: React.FC<FarmWithdrawProps> = ({
   const createWithdrawTrx = useCallback(async () => {
     return (await masterChef?.safeCall.withdraw(
       poolId,
-      amount,
-      account,
+      amount
     )) as TransactionResponse;
-  }, [account, amount, masterChef, poolId]);
+  }, [amount, masterChef, poolId]);
 
   const withdraw = useCallback(async () => {
     if (!masterChef) return;
