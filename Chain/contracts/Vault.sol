@@ -21,10 +21,10 @@ contract Vault is ReentrancyGuard, Ownable {
     uint256 public poolId;
     address public liquidityRouter;
 
-    address[] public earnedToToken0Path;
-    address[] public earnedToToken1Path;
-    address[] public token0ToEarnedPath;
-    address[] public token1ToEarnedPath;
+    address[] public rewardToToken0Path;
+    address[] public rewardToToken1Path;
+    address[] public token0ToRewardPath;
+    address[] public token0ToRewardPath;
 
     uint256 public swapTimeout;
 
@@ -62,10 +62,10 @@ contract Vault is ReentrancyGuard, Ownable {
         rewardToken = _masterChef.rewardToken();
         token0 = IUniswapV2Pair(wantAddress).token0();
         token1 = IUniswapV2Pair(wantAddress).token1();
-        token0ToEarnedPath = [token0, rewardToken];
-        token1ToEarnedPath = [token1, rewardToken];
-        earnedToToken0Path = [rewardToken, token0];
-        earnedToToken1Path = [rewardToken, token1];
+        token0ToRewardPath = [token0, rewardToken];
+        token0ToRewardPath = [token1, rewardToken];
+        rewardToToken0Path = [rewardToken, token0];
+        rewardToToken1Path = [rewardToken, token1];
     }
 
     function initialize(address _owner) external virtual {
@@ -243,11 +243,11 @@ contract Vault is ReentrancyGuard, Ownable {
         uint256 earnedAmt = IERC20(rewardToken).balanceOf(address(this));
 
         if (rewardToken != token0) {
-            _swap(rewardToken, token0, earnedAmt / 2, earnedToToken0Path);
+            _swap(rewardToken, token0, earnedAmt / 2, rewardToToken0Path);
         }
 
         if (rewardToken != token1) {
-            _swap(rewardToken, token1, earnedAmt / 2, earnedToToken1Path);
+            _swap(rewardToken, token1, earnedAmt / 2, rewardToToken1Path);
         }
 
         IERC20 _token0 = IERC20(token0);
@@ -352,13 +352,13 @@ contract Vault is ReentrancyGuard, Ownable {
         // Converts token0 dust (if any) to earned tokens
         uint256 token0Amt = IERC20(token0).balanceOf(address(this));
         if (token0 != rewardToken && token0Amt > 0) {
-            _swap(token0, rewardToken, token0Amt, token0ToEarnedPath);
+            _swap(token0, rewardToken, token0Amt, token0ToRewardPath);
         }
 
         // Converts token1 dust (if any) to earned tokens
         uint256 token1Amt = IERC20(token1).balanceOf(address(this));
         if (token1 != rewardToken && token1Amt > 0) {
-            _swap(token1, rewardToken, token1Amt, token1ToEarnedPath);
+            _swap(token1, rewardToken, token1Amt, token0ToRewardPath);
         }
     }
 
