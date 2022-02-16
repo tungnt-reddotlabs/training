@@ -11,7 +11,7 @@ import {
 import { useStartObserveTokens } from '../tokens/hooks';
 import { useVaultConfig } from '../../views/Vaults/hooks/useVaultConfig';
 
-export const VaulInfoUpdater = () => {
+export const VaultInfoUpdater = () => {
   const { account, chainId } = useWeb3React();
   const multicall = useMulticall();
   const dispatch = useDispatch();

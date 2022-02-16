@@ -5,11 +5,11 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useMulticall } from '../../hooks/useMulticall';
 import { useLastUpdated } from '../application/hooks';
-import { multipleUserVaulInfoFetched, loadPartnerPoolSuccess } from '../vaults/actions';
-import { useVaultingPoolConfigs } from '../vaults/hooks';
+import { multipleUserVaulInfoFetched, loadPartnerPoolSuccess } from './actions';
+import { useVaultingPoolConfigs } from './hooks';
 import { usePartnerVaultConfig } from '../../views/Vaults/hooks/usePartnerVaultConfig';
 
-const VaulUserUpdater: React.FC = () => {
+const VaultUserUpdater: React.FC = () => {
   const { account } = useWeb3React();
   const multicall = useMulticall();
   const dispatch = useDispatch();
@@ -23,25 +23,15 @@ const VaulUserUpdater: React.FC = () => {
 
     const calls = poolConfigs.map((pool) => [
       {
-        target: pool?.minichef,
-        signature: 'userInfo(uint256, address) returns (uint256 amount, uint256 rewardDebt)',
-        params: [pool?.id, account],
-      },
-      {
-        target: pool?.minichef,
-        signature: 'pendingSushi(uint256, address) view returns (uint256 pendingReward)',
-        params: [pool?.id, account],
-      },
+        target: pool?.address,
+        signature: 'info() returns (uint256 _balanceInFarm, uint256 _pendingRewards, bool _abandoned, bool _canDeposit, bool _canAbandon)',
+      }
     ]);
     const response = await multicall(flatten(calls));
-    return calls.map((_, index) => {
-      const [[amount, rewardDebt], [pendingReward]] = response.slice(
-        2 * index,
-        2 * (index + 1),
-      );
+    return response.map(([balance, pendingReward]) => {
       return {
-        amount: amount.toHexString(),
-        rewardDebt: rewardDebt.toHexString(),
+        amount: balance.toHexString(),
+        rewardDebt: balance.toHexString(),
         pendingReward: pendingReward.toHexString(),
       };
     });
@@ -62,4 +52,4 @@ const VaulUserUpdater: React.FC = () => {
   return null;
 };
 
-export default VaulUserUpdater;
+export default VaultUserUpdater;

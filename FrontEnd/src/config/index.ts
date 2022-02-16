@@ -62,18 +62,7 @@ export const getAllFarmsConfig = (chainId: ChainId) => {
 };
 
 export const getAllVaultsConfig = (chainId: ChainId) => {
-  const vauls = get(config.chainConfig, [chainId, 'stakingVaults'], null);
-  return flatten(
-    vauls?.map((t) => {
-      return t?.filter((p) => !p.startDate || isPast(p.startDate))
-        .map((p) => {
-          return {
-            ...p,
-            minichef: t?.minichef,
-          };
-        });
-    }),
-  ) as VaulPoolConfig[];
+  return get(config.chainConfig, [chainId, 'stakingVaults'], null) as VaulPoolConfig[];
 };
 
 export const getAllPartnerFarmsConfig = (chainId: ChainId) => {

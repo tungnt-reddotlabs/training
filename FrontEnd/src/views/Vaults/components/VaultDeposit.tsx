@@ -10,15 +10,14 @@ import { TokenInputWithMaxButton } from '../../../components/TokenInput/TokenInp
 import { screenUp } from '../../../utils/styles';
 import { useVaultingPoolConfig } from '../../../state/vaults/hooks';
 import { Zero } from '@ethersproject/constants';
+import { VaulPoolConfig } from '../../../models/Vault';
 
 interface VaulDepositProps {
-  poolId: number;
-  minichef: string;
+  pool: VaulPoolConfig;
 }
 
-const VaulDeposit: React.FC<VaulDepositProps> = ({ poolId, minichef }) => {
-  const poolConfig = useVaultingPoolConfig(minichef, poolId);
-  const wantToken = useToken(poolConfig?.wantSymbol);
+const VaulDeposit: React.FC<VaulDepositProps> = ({ pool }) => {
+  const wantToken = useToken(pool.wantSymbol);
   const wantTokenBalance = useTokenBalance(wantToken?.symbol);
   const [inputAmount, setInputAmount] = useState<BigNumber | undefined>(undefined);
 
@@ -59,8 +58,7 @@ const VaulDeposit: React.FC<VaulDepositProps> = ({ poolId, minichef }) => {
         />
         <StyledActions>
           <VaulButtonDeposit
-            minichef={minichef}
-            poolId={poolId}
+            poolConfig={pool}
             amount={inputAmount}
             onDeposited={resetFrom}
           />

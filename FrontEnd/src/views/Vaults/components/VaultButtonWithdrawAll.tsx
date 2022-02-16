@@ -10,22 +10,21 @@ import { useMemo } from 'react';
 import styled from 'styled-components';
 import { useVaultingPool } from '../../../state/vaults/hooks';
 import { screenUp } from '../../../utils/styles';
+import { VaultingPoolInfo } from '../../../models/Vault';
 
 interface VaulButtonWithdrawAllProps {
-  poolId: number;
-  minichef: string;
+  poolConfig: VaultingPoolInfo;
 }
 
-const VaulButtonWithdrawAll: React.FC<VaulButtonWithdrawAllProps> = ({ poolId, minichef }) => {
+const VaulButtonWithdrawAll: React.FC<VaulButtonWithdrawAllProps> = ({ poolConfig }) => {
   const { account } = useWeb3React();
-  const pool = useVaultingPool(minichef, poolId);
-  const masterChef = useContract(VaultAbi, pool?.poolConfig?.address);
+  const masterChef = useContract(VaultAbi, poolConfig?.poolConfig?.address);
   const handleTransactionReceipt = useHandleTransactionReceipt();
   const [loading, setLoading] = useState(false);
 
   const balance = useMemo(() => {
-    return pool?.userInfo?.amount;
-  }, [pool?.userInfo?.amount]);
+    return poolConfig?.userInfo?.amount;
+  }, [poolConfig?.userInfo?.amount]);
 
   const disabled = useMemo(() => {
     return loading || !account || !balance || balance?.eq(Zero);
@@ -33,7 +32,7 @@ const VaulButtonWithdrawAll: React.FC<VaulButtonWithdrawAllProps> = ({ poolId, m
 
   const createWithdrawAllTrx = useCallback(async () => {
     return (await masterChef?.safeCall.withdrawAll()) as TransactionResponse;
-  }, [account, masterChef, pool, balance]);
+  }, [account, masterChef, poolConfig, balance]);
 
   const withdrawAll = useCallback(async () => {
     if (!masterChef) return;

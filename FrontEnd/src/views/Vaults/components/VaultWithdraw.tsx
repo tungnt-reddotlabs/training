@@ -1,5 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Spacer from '../../../components/Spacer';
 import { useToken } from '../../../hooks/useToken';
@@ -8,19 +8,16 @@ import VaulButtonWithdraw from './VaultButtonWithdraw';
 import VaulButtonWithdrawAll from './VaultButtonWithdrawAll';
 import { TokenInputWithMaxButton } from '../../../components/TokenInput/TokenInputWithMaxButton';
 import { screenUp } from '../../../utils/styles';
-import { useVaultingPool, useVaultingPoolConfig } from '../../../state/vaults/hooks';
+import {  VaultingPoolInfo } from '../../../models/Vault';
 import { Zero } from '@ethersproject/constants';
 
 interface VaulWithdrawProps {
-  poolId: number;
-  minichef: string;
+  pool: VaultingPoolInfo;
 }
 
-const VaulWithdraw: React.FC<VaulWithdrawProps> = ({ poolId, minichef }) => {
-  const poolConfig = useVaultingPoolConfig(minichef, poolId);
-  const wantToken = useToken(poolConfig?.wantSymbol);
-  const poolInfo = useVaultingPool(minichef, poolId);
-  const userPoolInfo = poolInfo?.userInfo;
+const VaulWithdraw: React.FC<VaulWithdrawProps> = ({ pool }) => {
+  const wantToken = useToken(pool?.poolConfig?.wantSymbol);
+  const userPoolInfo = pool?.userInfo;
   const [inputAmount, setInputAmount] = useState<BigNumber | undefined>(undefined);
 
   const onResetForm = useCallback(() => {
@@ -60,11 +57,10 @@ const VaulWithdraw: React.FC<VaulWithdrawProps> = ({ poolId, minichef }) => {
           background="#fff"
         />
         <StyledActions>
-          <VaulButtonWithdrawAll poolId={poolId} minichef={minichef} />
+          <VaulButtonWithdrawAll poolConfig={pool} />
           <Spacer size="sm" />
           <VaulButtonWithdraw
-            poolId={poolId}
-            minichef={minichef}
+            poolConfig={pool}
             amount={inputAmount}
             onWithdraw={onResetForm}
           />

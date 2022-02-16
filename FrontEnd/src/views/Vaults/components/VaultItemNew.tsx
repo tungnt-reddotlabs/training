@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Zero } from '@ethersproject/constants';
 import VaulDeposit from './VaultDeposit';
@@ -37,9 +37,8 @@ const VaulItem: React.FC<VaulItemProps> = ({ index, pool }) => {
   const vaulName = useMemo(() => {
     return pool?.poolConfig?.name
       ? pool?.poolConfig?.name
-      : `${pool?.poolConfig?.wantTokens[0]}${
-          pool?.poolConfig?.wantTokens[1] ? '/' + pool?.poolConfig?.wantTokens[1] : ''
-        }`;
+      : `${pool?.poolConfig?.wantTokens[0]}${pool?.poolConfig?.wantTokens[1] ? '/' + pool?.poolConfig?.wantTokens[1] : ''
+      }`;
   }, [pool?.poolConfig?.name, pool?.poolConfig?.wantTokens]);
 
   const depositedValue = useMemo(() => {
@@ -163,12 +162,10 @@ const VaulItem: React.FC<VaulItemProps> = ({ index, pool }) => {
           {!pool?.poolConfig?.coming && (
             <>
               <VaulDeposit
-                minichef={pool?.poolConfig?.address}
-                poolId={pool?.poolConfig?.id}
+                pool={pool?.poolConfig}
               />
               <VaulWithdraw
-                minichef={pool?.poolConfig?.address}
-                poolId={pool?.poolConfig?.id}
+                pool={pool}
               />
               <VaulItemReward
                 poolConfig={pool?.poolConfig}

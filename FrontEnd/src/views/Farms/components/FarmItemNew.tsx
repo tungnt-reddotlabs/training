@@ -82,10 +82,6 @@ const FarmItem: React.FC<FarmItemProps> = ({ index, pool }) => {
     return rewardPrice?.mul(rewardPerDay)?.mul(365)?.div(totalValueLocked);
   }, [rewardPerDay, rewardPrice, totalValueLocked]);
 
-  useEffect(() => {
-    console.log(pool)
-  }, [pool])
-
   return (
     <StyledContainer>
       <CollapseItem id={index}>

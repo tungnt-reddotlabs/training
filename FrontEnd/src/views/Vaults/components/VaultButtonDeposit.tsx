@@ -12,10 +12,10 @@ import { Button } from '../../../components/Buttons/Button';
 import { useApprove } from '../../../hooks/useApprove';
 import { useVaultingPool } from '../../../state/vaults/hooks';
 import { Zero } from '@ethersproject/constants';
+import { VaulPoolConfig } from '../../../models/Vault';
 
 interface VaulButtonDepositProps {
-  poolId: number;
-  minichef: string;
+  poolConfig: VaulPoolConfig;
   amount: BigNumber;
   onDeposited?: () => void;
 }
@@ -31,19 +31,17 @@ enum ButtonStatus {
 }
 
 const VaulButtonDeposit: React.FC<VaulButtonDepositProps> = ({
-  poolId,
-  minichef,
+  poolConfig,
   amount,
   onDeposited,
 }) => {
   const { account } = useWeb3React();
-  const pool = useVaultingPool(minichef, poolId);
-  const wantToken = useToken(pool?.poolConfig?.wantSymbol);
-  const masterChef = useContract(VaultAbi, pool?.poolConfig?.address);
+  const wantToken = useToken(poolConfig.wantSymbol);
+  const masterChef = useContract(VaultAbi, poolConfig.address);
   const balance = useTokenBalance(wantToken?.symbol);
   const { isApproved, approve, loadingSubmit } = useApprove(
     wantToken?.symbol,
-    pool?.poolConfig?.minichef,
+    poolConfig.address
   );
   const handleTransactionReceipt = useHandleTransactionReceipt();
   const [loading, setLoading] = useState(false);
@@ -109,9 +107,9 @@ const VaulButtonDeposit: React.FC<VaulButtonDepositProps> = ({
   }, [status]);
 
   const createStakeTrx = useCallback(async () => {
-    const result = await masterChef?.safeCall.deposit(amount); 
+    const result = await masterChef?.safeCall.deposit(amount);
     return result as TransactionResponse;
-  }, [account, amount, masterChef, pool]);
+  }, [account, amount, masterChef, poolConfig]);
 
   const stake = useCallback(async () => {
     if (!masterChef) return;

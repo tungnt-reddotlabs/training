@@ -11,31 +11,29 @@ import { Button } from '../../../components/Buttons';
 import { useVaultingPool } from '../../../state/vaults/hooks';
 import { screenUp } from '../../../utils/styles';
 import styled from 'styled-components';
+import { VaultingPoolInfo } from '../../../models/Vault';
 
 interface VaulWithdrawProps {
-  poolId: number;
-  minichef: string;
+  poolConfig: VaultingPoolInfo;
   amount: BigNumber;
   onWithdraw?: () => void;
 }
 
 const VaulButtonWithdraw: React.FC<VaulWithdrawProps> = ({
-  poolId,
+  poolConfig,
   amount,
   onWithdraw,
-  minichef,
 }) => {
   const { account } = useWeb3React();
-  const pool = useVaultingPool(minichef, poolId);
-  const wantToken = useToken(pool?.poolConfig?.wantSymbol);
-  const rewardToken = useToken(pool?.poolConfig?.rewardToken);
-  const masterChef = useContract(VaultAbi, pool?.poolConfig?.address);
+  const wantToken = useToken(poolConfig?.poolConfig?.wantSymbol);
+  const rewardToken = useToken(poolConfig?.poolConfig?.rewardToken);
+  const masterChef = useContract(VaultAbi, poolConfig?.poolConfig?.address);
   const handleTransactionReceipt = useHandleTransactionReceipt();
   const [loading, setLoading] = useState(false);
 
   const balance = useMemo(() => {
-    return pool?.userInfo?.amount;
-  }, [pool?.userInfo?.amount]);
+    return poolConfig?.userInfo?.amount;
+  }, [poolConfig?.userInfo?.amount]);
 
   const hasInputError = useMemo(() => {
     if (!amount || !balance) {
@@ -79,7 +77,7 @@ const VaulButtonWithdraw: React.FC<VaulWithdrawProps> = ({
 
   const createWithdrawTrx = useCallback(async () => {
     return (await masterChef?.safeCall.withdraw(amount)) as TransactionResponse;
-  }, [account, amount, masterChef, pool]);
+  }, [account, amount, masterChef, poolConfig]);
 
   const withdraw = useCallback(async () => {
     if (!masterChef) return;
