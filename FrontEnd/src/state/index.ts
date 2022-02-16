@@ -5,6 +5,7 @@ import transactions from './transactions/reducer';
 import user, { initialState as userInitialState } from './user/reducer';
 import tokens, { initialState as tokensInitialState } from './tokens/reducer';
 import farms, { initialState as farmsInitialState } from './farms/reducer';
+import vaults, { initialState as vaultssInitialState } from './vaults/reducer';
 
 const PERSISTED_KEYS: string[] = [
   'user.account',
@@ -21,6 +22,7 @@ export const store = configureStore({
     user,
     tokens,
     farms,
+    vaults,
   },
   middleware: [
     ...getDefaultMiddleware({
@@ -41,6 +43,7 @@ export const store = configureStore({
       user: { ...userInitialState },
       tokens: { ...tokensInitialState },
       farms: { ...farmsInitialState },
+      vaults: { ...vaultssInitialState }
     },
   }),
 });

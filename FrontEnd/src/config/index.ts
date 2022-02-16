@@ -4,6 +4,7 @@ import polygon from './polygon';
 import get from 'lodash/get';
 import mapValues from 'lodash/mapValues';
 import { FarmPoolConfig } from '../models/Farm';
+import { VaulPoolConfig } from '../models/Vault'
 import flatten from 'lodash/flatten';
 import { isPast } from '../utils/times';
 
@@ -60,8 +61,27 @@ export const getAllFarmsConfig = (chainId: ChainId) => {
   ) as FarmPoolConfig[];
 };
 
+export const getAllVaultsConfig = (chainId: ChainId) => {
+  const vauls = get(config.chainConfig, [chainId, 'stakingVaults'], null);
+  return flatten(
+    vauls?.map((t) => {
+      return t?.filter((p) => !p.startDate || isPast(p.startDate))
+        .map((p) => {
+          return {
+            ...p,
+            minichef: t?.minichef,
+          };
+        });
+    }),
+  ) as VaulPoolConfig[];
+};
+
 export const getAllPartnerFarmsConfig = (chainId: ChainId) => {
   return get(config.chainConfig, [chainId, 'partnerFarms']) as FarmPoolConfig[];
+};
+
+export const getAllPartnerVaultsConfig = (chainId: ChainId) => {
+  return get(config.chainConfig, [chainId, 'partnerVaults']) as VaulPoolConfig[];
 };
 
 export const getMulticallAddress = (chainId: ChainId) => {

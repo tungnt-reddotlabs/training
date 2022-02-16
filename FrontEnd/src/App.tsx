@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { store } from './state';
 import { Updaters } from './state/updaters';
 import Modals from './providers/Modals';
@@ -12,6 +12,7 @@ import Header from './components/Layout/Header';
 import { Popups } from './components/Popups';
 import { MainWrapper } from './components/Layout/MainWrapper';
 import Farms from './views/Farms';
+import Vaults from './views/Vaults';
 
 const getLibrary = (p: ExternalProvider | JsonRpcFetchFunc) => {
   return new Web3Provider(p);
@@ -24,7 +25,10 @@ export const App: React.FC = () => {
       <Popups />
       <Header />
       <MainWrapper>
-        <Farms />
+        <Switch>
+          <Route path="/farms" component={Farms} />
+          <Route path="/vauls" component={Vaults} />
+        </Switch>
       </MainWrapper>
     </Providers>
   );

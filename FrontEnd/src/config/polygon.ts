@@ -25,7 +25,8 @@ const config: ChainConfig = {
           rewardToken: 'TNH',
           isLp: true,
           market: 'SushiSwap',
-          rewardPerDay: '100000'
+          rewardPerDay: '100000',
+          minichef: '0xA9e1D08Aa73BA2219E2f6C9F2bB8c33717015768',
         },
         {
           id: 1,
@@ -34,19 +35,30 @@ const config: ChainConfig = {
           rewardToken: 'TNH',
           isLp: true,
           market: 'QuickSwap',
-          rewardPerDay: '100000'
+          rewardPerDay: '100000',
+          minichef: '0xA9e1D08Aa73BA2219E2f6C9F2bB8c33717015768'
         },
       ],
     },
   ],
   partnerFarms: [],
   stakingVaults: [
-    // {
-    //   address: '0xe877bE9e845ea8Cd6AC1aac86d70441C88459eab',
-    //   wantSymbol: '1SWAP',
-    //   rewardSymbol: '1SWAP',
-    //   inActive: true,
-    // }
+    {
+      address: '0xcb3db27e50df422d809e8231b1844a69af992bfe',
+      wantTokens: ['TNH', 'MATIC'],
+      rewardToken: 'TNH',
+      wantSymbol: 'TNH-MATIC',
+      rewardSymbol: 'TNH',
+      inActive: true,
+    },
+    {
+      address: '0x598253d17a5f5d6789c9dc542f852abe154071e7',
+      wantTokens: ['TNH', 'USDC'],
+      rewardToken: 'TNH',
+      wantSymbol: 'TNH-USDC',
+      rewardSymbol: 'TNH',
+      inActive: true,
+    }
   ],
   tokens: {
     USDC: {

@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Zero } from '@ethersproject/constants';
-import FarmDeposit from './FarmDeposit';
-import FarmWithdraw from './FarmWithdraw';
+import VaulDeposit from './VaultDeposit';
+import VaulWithdraw from './VaultWithdraw';
 import { screenUp } from '../../../utils/styles';
-import { FarmingPoolInfo } from '../../../models/Farm';
-import FarmItemReward from './FarmItemReward';
+import { VaultingPoolInfo } from '../../../models/Vault';
+import VaulItemReward from './VaultItemReward';
 import { BigNumberValue } from '../../../components/BigNumberValue';
 import { useMemo } from 'react';
 import { useTokenPrice } from '../../../state/tokens/hooks';
 import { PricePrecision } from '../../../utils/constants';
 import { isPast } from '../../../utils/times';
-import { FarmItemCountdown } from './FarmItemCountdown';
+import { VaulItemCountdown } from './VaultItemCountdown';
 import iconTimer from '../../../assets/icons/timer.svg';
 import {
   CollapseBody,
@@ -21,24 +21,25 @@ import {
   CollapseOpen,
 } from '../../../components/Collapse';
 
-export type FarmItemProps = {
+export type VaulItemProps = {
   index: number;
-  pool: FarmingPoolInfo;
+  pool: VaultingPoolInfo;
 };
 
-const FarmItem: React.FC<FarmItemProps> = ({ index, pool }) => {
-  const farmUrl = useMemo(() => pool?.poolConfig?.farmUrl, [pool]);
+const VaulItem: React.FC<VaulItemProps> = ({ index, pool }) => {
+  const vaulUrl = useMemo(() => pool?.poolConfig?.vaultUrl, [pool]);
   const userPoolInfo = pool?.userInfo;
   const wantPrice = useTokenPrice(pool?.poolConfig?.wantSymbol);
   const rewardPrice = useTokenPrice(pool?.poolConfig?.rewardToken);
   const startRewardTime = pool?.poolConfig?.startRewardTime || 0;
   const [isStartSentReward, setIsStartSentReward] = useState(isPast(startRewardTime));
 
-  const farmName = useMemo(() => {
+  const vaulName = useMemo(() => {
     return pool?.poolConfig?.name
       ? pool?.poolConfig?.name
-      : `${pool?.poolConfig?.wantTokens[0]}${pool?.poolConfig?.wantTokens[1] ? '/' + pool?.poolConfig?.wantTokens[1] : ''
-      }`;
+      : `${pool?.poolConfig?.wantTokens[0]}${
+          pool?.poolConfig?.wantTokens[1] ? '/' + pool?.poolConfig?.wantTokens[1] : ''
+        }`;
   }, [pool?.poolConfig?.name, pool?.poolConfig?.wantTokens]);
 
   const depositedValue = useMemo(() => {
@@ -82,31 +83,31 @@ const FarmItem: React.FC<FarmItemProps> = ({ index, pool }) => {
     return rewardPrice?.mul(rewardPerDay)?.mul(365)?.div(totalValueLocked);
   }, [rewardPerDay, rewardPrice, totalValueLocked]);
 
-  useEffect(() => {
-    console.log(pool)
-  }, [pool])
-
   return (
     <StyledContainer>
       <CollapseItem id={index}>
         <StyledHeader coming={!isStartSentReward}>
-          <StyledFarmToken>
+          <StyledVaulToken>
             <div>
-              <StyledSymbol>{farmName}</StyledSymbol>
+              <StyledSymbol>{vaulName}</StyledSymbol>
               <StyledReward>
-                {pool?.poolConfig?.rewardPerDay ? (
-                  pool?.poolConfig?.rewardPerDay
+                {vaulUrl ? (
+                  pool?.partnerPoolInfo?.rewardPerDay ? (
+                    pool?.partnerPoolInfo?.rewardPerDay
+                  ) : (
+                    '-'
+                  )
                 ) : (
-                  '-'
+                  <BigNumberValue value={rewardPerDay} decimals={18} fractionDigits={0} />
                 )}
                 &nbsp;
                 {pool?.poolConfig?.rewardToken} per day
               </StyledReward>
             </div>
-          </StyledFarmToken>
+          </StyledVaulToken>
           {isStartSentReward ? (
             <StyledHeaderInfo>
-              {/* <StyledRow>
+              <StyledRow>
                 <StyledTitle>Deposited</StyledTitle>
                 <StyledValue>
                   {depositedValue?.gt(Zero) ? (
@@ -132,12 +133,12 @@ const FarmItem: React.FC<FarmItemProps> = ({ index, pool }) => {
                     '-'
                   )}
                 </StyledValue>
-              </StyledRow> */}
+              </StyledRow>
             </StyledHeaderInfo>
           ) : (
             <StyledComing>
               <img src={iconTimer} />
-              <FarmItemCountdown
+              <VaulItemCountdown
                 to={startRewardTime}
                 onArrived={() => setIsStartSentReward(true)}
               />
@@ -161,15 +162,15 @@ const FarmItem: React.FC<FarmItemProps> = ({ index, pool }) => {
         <StyledContent>
           {!pool?.poolConfig?.coming && (
             <>
-              <FarmDeposit
-                minichef={pool?.poolConfig?.minichef}
+              <VaulDeposit
+                minichef={pool?.poolConfig?.address}
                 poolId={pool?.poolConfig?.id}
               />
-              <FarmWithdraw
-                minichef={pool?.poolConfig?.minichef}
+              <VaulWithdraw
+                minichef={pool?.poolConfig?.address}
                 poolId={pool?.poolConfig?.id}
               />
-              <FarmItemReward
+              <VaulItemReward
                 poolConfig={pool?.poolConfig}
                 pendingReward={userPoolInfo?.pendingReward}
               />
@@ -223,7 +224,7 @@ const StyledHeader = styled.div<{ coming?: boolean }>`
   `}
 `;
 
-const StyledFarmToken = styled.div`
+const StyledVaulToken = styled.div`
   display: flex;
   img {
     width: 100px;
@@ -330,4 +331,4 @@ const StyledContent = styled.div`
   `}
 `;
 
-export default FarmItem;
+export default VaulItem;

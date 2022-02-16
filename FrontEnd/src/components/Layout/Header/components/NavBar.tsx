@@ -50,6 +50,18 @@ export const NavBar: React.FC = () => {
           <img src={metamask} />
         </button>
       </StyledPrice>
+      <StyledNav>
+        <StyledNavItem>
+          <StyledNavLink onClick={onClickItem} to="/farms">
+            Farms
+          </StyledNavLink>
+        </StyledNavItem>
+        <StyledNavItem>
+          <StyledNavLink onClick={onClickItem} to="/vauls">
+            Vaults
+          </StyledNavLink>
+        </StyledNavItem>
+      </StyledNav>
     </StyledContainer>
   );
 };

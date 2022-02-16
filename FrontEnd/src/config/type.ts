@@ -16,6 +16,8 @@ export type StakingVaultConfig = {
   wantSymbol: string;
   rewardSymbol: string;
   inActive?: boolean;
+  wantTokens: string[];
+  rewardToken: string;
 };
 
 export type ChainConfig = {
