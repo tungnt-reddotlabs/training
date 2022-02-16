@@ -90,14 +90,10 @@ const VaulItem: React.FC<VaulItemProps> = ({ index, pool }) => {
             <div>
               <StyledSymbol>{vaulName}</StyledSymbol>
               <StyledReward>
-                {vaulUrl ? (
-                  pool?.partnerPoolInfo?.rewardPerDay ? (
-                    pool?.partnerPoolInfo?.rewardPerDay
-                  ) : (
-                    '-'
-                  )
+                {pool?.poolConfig?.rewardPerDay ? (
+                  pool?.poolConfig?.rewardPerDay
                 ) : (
-                  <BigNumberValue value={rewardPerDay} decimals={18} fractionDigits={0} />
+                  '-'
                 )}
                 &nbsp;
                 {pool?.poolConfig?.rewardToken} per day
@@ -106,7 +102,7 @@ const VaulItem: React.FC<VaulItemProps> = ({ index, pool }) => {
           </StyledVaulToken>
           {isStartSentReward ? (
             <StyledHeaderInfo>
-              <StyledRow>
+              {/* <StyledRow>
                 <StyledTitle>Deposited</StyledTitle>
                 <StyledValue>
                   {depositedValue?.gt(Zero) ? (
@@ -132,7 +128,7 @@ const VaulItem: React.FC<VaulItemProps> = ({ index, pool }) => {
                     '-'
                   )}
                 </StyledValue>
-              </StyledRow>
+              </StyledRow> */}
             </StyledHeaderInfo>
           ) : (
             <StyledComing>

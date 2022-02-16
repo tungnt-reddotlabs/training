@@ -36,7 +36,7 @@ const config: ChainConfig = {
           isLp: true,
           market: 'QuickSwap',
           rewardPerDay: '100000',
-          minichef: '0xA9e1D08Aa73BA2219E2f6C9F2bB8c33717015768'
+          minichef: '0xA9e1D08Aa73BA2219E2f6C9F2bB8c33717015768',
         },
       ],
     },
@@ -44,21 +44,22 @@ const config: ChainConfig = {
   partnerFarms: [],
   stakingVaults: [
     {
-      address: '0xcb3db27e50df422d809e8231b1844a69af992bfe',
+      address: '0x008cfd4c3ed04e000a3a58d9d33abdda70bdf3a7',
       wantTokens: ['TNH', 'MATIC'],
       rewardToken: 'TNH',
       wantSymbol: 'TNH-MATIC',
       rewardSymbol: 'TNH',
+      rewardPerDay: '100000',
       inActive: true,
     },
-    {
-      address: '0x598253d17a5f5d6789c9dc542f852abe154071e7',
-      wantTokens: ['TNH', 'USDC'],
-      rewardToken: 'TNH',
-      wantSymbol: 'TNH-USDC',
-      rewardSymbol: 'TNH',
-      inActive: true,
-    }
+    // {
+    //   address: '0x598253d17a5f5d6789c9dc542f852abe154071e7',
+    //   wantTokens: ['TNH', 'USDC'],
+    //   rewardToken: 'TNH',
+    //   wantSymbol: 'TNH-USDC',
+    //   rewardSymbol: 'TNH',
+    //   inActive: false,
+    // }
   ],
   tokens: {
     USDC: {

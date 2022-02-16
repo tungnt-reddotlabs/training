@@ -18,6 +18,7 @@ export type StakingVaultConfig = {
   inActive?: boolean;
   wantTokens: string[];
   rewardToken: string;
+  rewardPerDay: string | number
 };
 
 export type ChainConfig = {

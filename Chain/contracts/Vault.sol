@@ -21,14 +21,12 @@ contract Vault is ReentrancyGuard, Ownable {
     uint256 public poolId;
     address public liquidityRouter;
 
-    mapping(address => mapping(address => RouteInfo)) public routes;
+    address[] public earnedToToken0Path;
+    address[] public earnedToToken1Path;
+    address[] public token0ToEarnedPath;
+    address[] public token1ToEarnedPath;
 
     uint256 public swapTimeout;
-
-    struct RouteInfo {
-        address router;
-        address[] path;
-    }
 
     uint256 internal constant RATIO_PRECISION = 1000000; // 6 decimals
     address internal constant weth = 0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270; // matic
@@ -64,12 +62,13 @@ contract Vault is ReentrancyGuard, Ownable {
         rewardToken = _masterChef.rewardToken();
         token0 = IUniswapV2Pair(wantAddress).token0();
         token1 = IUniswapV2Pair(wantAddress).token1();
+        token0ToEarnedPath = [token0, rewardToken];
+        token1ToEarnedPath = [token1, rewardToken];
+        earnedToToken0Path = [rewardToken, token0];
+        earnedToToken1Path = [rewardToken, token1];
     }
 
-    function initialize(address _owner)
-        external
-        virtual
-    {
+    function initialize(address _owner) external virtual {
         require(!initialized, "already init");
         harvestor = _owner;
         initialized = true;
@@ -78,7 +77,9 @@ contract Vault is ReentrancyGuard, Ownable {
     // =========== views ===============================
 
     function canAbandon() public view returns (bool) {
-        bool _noRewardTokenLeft = IERC20(rewardToken).balanceOf(address(this)) == 0;
+        bool _noRewardTokenLeft = IERC20(rewardToken).balanceOf(
+            address(this)
+        ) == 0;
         bool _noLpTokenLeft = IERC20(wantAddress).balanceOf(address(this)) == 0;
         bool _noPending = pending() == 0;
         return _noRewardTokenLeft && _noLpTokenLeft && _noPending;
@@ -133,11 +134,7 @@ contract Vault is ReentrancyGuard, Ownable {
 
     // =========== restricted functions =================
 
-    function updateSlippage(uint256 _slippage)
-        public
-        virtual
-        onlyOwner
-    {
+    function updateSlippage(uint256 _slippage) public virtual onlyOwner {
         slippage = _slippage;
     }
 
@@ -233,7 +230,7 @@ contract Vault is ReentrancyGuard, Ownable {
     receive() external payable {}
 
     // =========== Core =================
-     function compound() external onlyHarvestor {
+    function compound() external onlyHarvestor {
         // Harvest farm tokens
         uint256 _initBalance = balanceInFarm();
         _widthdrawFromFarm(0);
@@ -246,11 +243,11 @@ contract Vault is ReentrancyGuard, Ownable {
         uint256 earnedAmt = IERC20(rewardToken).balanceOf(address(this));
 
         if (rewardToken != token0) {
-            _swap(rewardToken, token0, earnedAmt / 2);
+            _swap(rewardToken, token0, earnedAmt / 2, earnedToToken0Path);
         }
 
         if (rewardToken != token1) {
-            _swap(rewardToken, token1, earnedAmt / 2);
+            _swap(rewardToken, token1, earnedAmt / 2, earnedToToken1Path);
         }
 
         IERC20 _token0 = IERC20(token0);
@@ -286,13 +283,26 @@ contract Vault is ReentrancyGuard, Ownable {
         }
     }
 
-     function deposit(uint256 _wantAmt) public onlyOwner nonReentrant returns (uint256) {
-        IERC20(wantAddress).safeTransferFrom(address(msg.sender), address(this), _wantAmt);
+    function deposit(uint256 _wantAmt)
+        public
+        onlyOwner
+        nonReentrant
+        returns (uint256)
+    {
+        IERC20(wantAddress).safeTransferFrom(
+            address(msg.sender),
+            address(this),
+            _wantAmt
+        );
         _depositToFarm();
         return _wantAmt;
     }
 
-    function withdrawAll() external onlyOwner returns (uint256 _withdrawBalance) {
+    function withdrawAll()
+        external
+        onlyOwner
+        returns (uint256 _withdrawBalance)
+    {
         uint256 _balance = balanceInFarm();
         _withdrawBalance = withdraw(_balance);
         _cleanUp();
@@ -300,7 +310,12 @@ contract Vault is ReentrancyGuard, Ownable {
         emit Exit(_withdrawBalance);
     }
 
-    function withdraw(uint256 _wantAmt) public onlyOwner nonReentrant returns (uint256) {
+    function withdraw(uint256 _wantAmt)
+        public
+        onlyOwner
+        nonReentrant
+        returns (uint256)
+    {
         require(_wantAmt > 0, "_wantAmt <= 0");
         _widthdrawFromFarm(_wantAmt);
         uint256 _balance = IERC20(rewardToken).balanceOf(address(this));
@@ -321,12 +336,6 @@ contract Vault is ReentrancyGuard, Ownable {
         abandoned = true;
     }
 
-    function _getSwapRoute(address _fromToken, address _toToken) internal view returns (address _router, address[] memory _path) {
-        RouteInfo storage _info = routes[_fromToken][_toToken];
-        _router = _info.router;
-        _path = _info.path;
-    }
-
     function _withdrawFromVault() internal {
         uint256 _dustRewardBal = IERC20(rewardToken).balanceOf(address(this));
         if (_dustRewardBal > 0) {
@@ -343,13 +352,13 @@ contract Vault is ReentrancyGuard, Ownable {
         // Converts token0 dust (if any) to earned tokens
         uint256 token0Amt = IERC20(token0).balanceOf(address(this));
         if (token0 != rewardToken && token0Amt > 0) {
-            _swap(token0, rewardToken, token0Amt);
+            _swap(token0, rewardToken, token0Amt, token0ToEarnedPath);
         }
 
         // Converts token1 dust (if any) to earned tokens
         uint256 token1Amt = IERC20(token1).balanceOf(address(this));
         if (token1 != rewardToken && token1Amt > 0) {
-            _swap(token1, rewardToken, token1Amt);
+            _swap(token1, rewardToken, token1Amt, token1ToEarnedPath);
         }
     }
 
@@ -369,17 +378,23 @@ contract Vault is ReentrancyGuard, Ownable {
     function _swap(
         address _inputToken,
         address _outputToken,
-        uint256 _inputAmount
+        uint256 _inputAmount,
+        address[] memory _path
     ) internal {
-        if (_inputAmount == 0) {
-            return;
-        }
-        (address _router, address[] memory _path) = _getSwapRoute(_inputToken, _outputToken);
-        require(_router != address(0), "invalid route");
         require(_path[0] == _inputToken, "Route must start with src token");
-        require(_path[_path.length - 1] == _outputToken, "Route must end with dst token");
-        IERC20(_inputToken).safeApprove(_router, 0);
-        IERC20(_inputToken).safeApprove(_router, _inputAmount);
-        _safeSwap(_router, _inputAmount, slippage, _path, address(this), block.timestamp + swapTimeout);
+        require(
+            _path[_path.length - 1] == _outputToken,
+            "Route must end with dst token"
+        );
+        IERC20(_inputToken).safeApprove(liquidityRouter, 0);
+        IERC20(_inputToken).safeApprove(liquidityRouter, _inputAmount);
+        _safeSwap(
+            liquidityRouter,
+            _inputAmount,
+            slippage,
+            _path,
+            address(this),
+            block.timestamp + swapTimeout
+        );
     }
 }

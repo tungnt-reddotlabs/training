@@ -37,7 +37,7 @@ const VaulItemReward: React.FC<VaulItemRewardProps> = ({ poolConfig, pendingRewa
           </StyledInfo>
         </StyledEarnInfo>
         <StyledActions>
-          <VaulButtonClaimReward minichef={poolConfig?.minichef} poolId={poolConfig?.id} />
+          <VaulButtonClaimReward pool={poolConfig} />
           <Spacer size="sm" />
           <VaultButtonCompound pool={poolConfig}></VaultButtonCompound>
         </StyledActions>

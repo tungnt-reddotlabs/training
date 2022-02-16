@@ -31,7 +31,7 @@ const VaultButtonCompound: React.FC<VaultButtonCompoundProps> = ({ pool }) => {
     setLoading(true);
     try {
       const tx = await handleTransactionReceipt(
-        `Compounded`,
+        `Compounding`,
         compound,
       );
       if (tx) {

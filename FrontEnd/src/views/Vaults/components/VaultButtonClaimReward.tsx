@@ -9,18 +9,16 @@ import { useWeb3React } from '@web3-react/core';
 import { useToken } from '../../../hooks/useToken';
 import { ButtonOutline } from '../../../components/Buttons';
 import styled from 'styled-components';
-import { useVaultingPool } from '../../../state/vaults/hooks';
+import { VaulPoolConfig } from '../../../models/Vault';
 
 export type VaultButtonClaimRewardProps = {
-  minichef: string;
-  poolId: number;
+  pool: VaulPoolConfig;
 };
 
-const VaultButtonClaimReward: React.FC<VaultButtonClaimRewardProps> = ({ poolId, minichef }) => {
+const VaultButtonClaimReward: React.FC<VaultButtonClaimRewardProps> = ({ pool }) => {
   const { account } = useWeb3React();
-  const pool = useVaultingPool(minichef, poolId);
-  const rewardToken = useToken(pool?.poolConfig?.rewardToken);
-  const masterChef = useContract(VaultAbi, pool?.poolConfig?.address);
+  const rewardToken = useToken(pool?.rewardToken);
+  const masterChef = useContract(VaultAbi, pool?.address);
   const handleTransactionReceipt = useHandleTransactionReceipt();
   const [loading, setLoading] = useState(false);
 
@@ -48,11 +46,9 @@ const VaultButtonClaimReward: React.FC<VaultButtonClaimRewardProps> = ({ poolId,
   const disabled = useMemo(() => {
     return (
       loading ||
-      !pool?.userInfo?.pendingReward ||
-      pool?.userInfo?.pendingReward?.eq(Zero) ||
       !account
     );
-  }, [loading, pool?.userInfo?.pendingReward, account]);
+  }, [loading, pool, account]);
 
   return (
     <StyledButton
